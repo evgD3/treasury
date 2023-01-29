@@ -1,7 +1,5 @@
 import datetime
 
-#from enum import Enum
-
 from db_manager import init_db
 from db_manager import add_transaction
 from db_manager import select_all
@@ -12,20 +10,6 @@ from printer import print_category
 from printer import print_resent
 from printer import print_by_date
 
-#class Month(Enum):
- #   JANUARY = '31'
-   # FEBRUARY = '28'
-  #  MARCH = '31'
-    #APRIL = '30'
-#    MAY = '31'
- #   JUNE = '30'
-  #  JULY = '31'
-   # AUGUST = '31'
-    #SEPTEMBER = '30'
-#    OCTOBER = '31'
- #   NOVEMBER = '30'
-  #  DECEMBER = '31'
-    
 
 def command(argv: list) -> None:
     conn, cur = init_db()
@@ -58,20 +42,18 @@ def command(argv: list) -> None:
 
     if action == 'pm':
         try:
-            from_date = argv[2]
-            year = int(from_date[0:4])
-            month = int(from_date[5:7])
+            from_date = datetime.date.fromisoformat(argv[2])
+        except ValueError:
+            from_date = datetime.date.fromisoformat(input('date> '))
         except IndexError:
             now = datetime.date.today()
             year = now.year
             month = now.month
-            from_date = f'{year}-{month}-01'
+            from_date = datetime.date.fromisoformat(f'{year}-{month}-01')
+        year = from_date.year
+        month = from_date.month
         if month == 12:
-            to_date = f'{year+1}-01-01'
+            to_date = datetime.date.fromisoformat(f'{year+1}-01-01')
         else:
-            to_date = f'{year}-{month+1}-01'
-        print(from_date)
-        print(f'year: {year}, month: {month}')
-        print(to_date)
-
+            to_date = datetime.date.fromisoformat(f'{year}-{month+1}-01')
         print_by_date(select_by_date(cur, from_date, to_date))

@@ -1,6 +1,3 @@
-import tabulate
-
-
 def print_resent(transactions: list) -> None:
     balance = 0
     for i in transactions:
@@ -8,13 +5,12 @@ def print_resent(transactions: list) -> None:
     transactions = transactions[-10:]
     transactions = transactions[::-1]
     print(f'\033[34mBALANCE: {balance}')
-    #print('\033[95mRESENT:')
-    print('\033[95m[id]     [amount]   [date]        [type]')
+    print(f'\033[34m[{"id":<5}][{"amount":<7}][{"date":<11}][{"type":<15}]')
     for i in transactions:
         if i[1]>0:
-            print(f'\033[92m [{i[0]}]   [{i[1]}]         [{i[2]}]   [{i[3]}]')
+            print(f'\033[92m[{i[0]:<5}][{i[1]:<7}][{i[2]} ][{i[3]:<15}]')
         else:
-            print(f'\033[31m [{i[0]}]   [{i[1]}]         [{i[2]}]   [{i[3]}]')
+            print(f'\033[31m[{i[0]:<5}][{i[1]:<7}][{i[2]} ][{i[3]:<15}]')
 
 
 def print_category(transactions: list) -> None:
@@ -25,23 +21,23 @@ def print_category(transactions: list) -> None:
         print(f'\033[92mALL {ALL}')
     else:
         print(f'\033[91mALL {ALL}')
-    print('\033[95m [type]     [date]        [amount]        [id]')
+    print(f'\033[95m[{"type":<15}][{"date":<11}][{"amount":<7}][{"id":<5}]')
     for i in transactions:
         if i[1]>0:
-            print(f'\033[92m [{i[3]}]   [{i[2]}]         [{i[1]}]   [{i[0]}]')
+            print(f'\033[92m[{i[3]:<15}][{i[2]} ][{i[1]:<7}][{i[0]:<5}]')
         else:
-            print(f'\033[91m [{i[3]}]   [{i[2]}]         [{i[1]}]   [{i[0]}]')
+            print(f'\033[91m[{i[3]:<15}][{i[2]} ][{i[1]:<7}][{i[0]:<5}]')
 
 
 def print_by_date(transactions: list) -> None:
-    up = 0
-    down = 0
+    income = 0
+    costs = 0
     for i in transactions:
         if i[1] > 0:
-            up += i[1]
+            income += i[1]
         else:
-            down += i[1]
-    print(f'\033[92mUP: {up} ' f'\033[91mDOWN: {down}')
+            costs += i[1]
+    print(f'\033[92m INCOME: {income} ' f'\033[91m COSTS: {costs}')
 
     print('\033[95m[id]     [amount]   [date]        [type]')
     for i in transactions:
@@ -49,6 +45,3 @@ def print_by_date(transactions: list) -> None:
             print(f'\033[92m [{i[0]}]   [{i[1]}]         [{i[2]}]   [{i[3]}]')
         else:
             print(f'\033[31m [{i[0]}]   [{i[1]}]         [{i[2]}]   [{i[3]}]')
-
-
-
