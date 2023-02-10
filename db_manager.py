@@ -15,8 +15,8 @@ def init_db() -> tuple:
 
 
 def add_transaction(conn: psycopg2.extensions.connection,
-                          cur: psycopg2.extensions.cursor,
-                          amount: int, category: str) -> None:
+                    cur: psycopg2.extensions.cursor,
+                    amount: int, category: str) -> None:
     cur.execute(f'''INSERT INTO main_account (amount, category)
                     VALUES ({amount}, '{category}')''')
     conn.commit()

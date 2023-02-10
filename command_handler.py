@@ -13,15 +13,15 @@ from printer import print_by_date
 
 def command(argv: list) -> None:
     conn, cur = init_db()
-    
+
     try:
         action = argv[1]
     except IndexError:
         action = input('action > ').strip()
-    
+
     if action == 'p':
         print_resent(select_all(cur))
-    
+
     if action == 'a':
         try:
             amount = argv[2]
@@ -32,7 +32,7 @@ def command(argv: list) -> None:
         except IndexError:
             category = input('category> ').strip()
         add_transaction(conn, cur, amount, category)
-    
+
     if action == 'pc':
         try:
             category = argv[2]
@@ -43,13 +43,13 @@ def command(argv: list) -> None:
     if action == 'pm':
         try:
             from_date = datetime.date.fromisoformat(argv[2])
-        except ValueError:
-            from_date = datetime.date.fromisoformat(input('date> '))
         except IndexError:
             now = datetime.date.today()
             year = now.year
             month = now.month
             from_date = datetime.date.fromisoformat(f'{year}-{month}-01')
+        except ValueError:
+            from_date = datetime.date.fromisoformat(input('date> '))
         year = from_date.year
         month = from_date.month
         if month == 12:
