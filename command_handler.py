@@ -41,19 +41,15 @@ def command(argv: list) -> None:
         print_category(select_by_category(cur, category))
 
     if action == 'pm':
-        try:
-            from_date = datetime.date.fromisoformat(argv[2])
-        except IndexError:
-            now = datetime.date.today()
-            year = now.year
-            month = now.month
-            from_date = datetime.date.fromisoformat(f'{year}-{month}-01')
-        except ValueError:
-            from_date = datetime.date.fromisoformat(input('date> '))
-        year = from_date.year
-        month = from_date.month
+        now = datetime.date.today()
+        year = now.year
+        month = now.month
+        #from_date = datetime.date.fromisoformat(f'{year}-{month}-01')
+        from_date = (f'{year}-{month}-01')
         if month == 12:
-            to_date = datetime.date.fromisoformat(f'{year+1}-01-01')
+            to_date = (f'{year+1}-01-01')
+            #to_date = datetime.date.fromisoformat(f'{year+1}-01-01')
         else:
-            to_date = datetime.date.fromisoformat(f'{year}-{month+1}-01')
+            #to_date = datetime.date.fromisoformat(f'{year}-{month+1}-01')
+            to_date = (f'{year}-{month+1}-01')
         print_by_date(select_by_date(cur, from_date, to_date))
