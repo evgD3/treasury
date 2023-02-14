@@ -41,3 +41,9 @@ def select_by_category(cur: psycopg2.extensions.cursor, category: str) -> list:
                     WHERE category = '{category}' ''')
     output = cur.fetchall()
     return output
+
+def close_db(conn: psycopg2.extensions.connection,
+             cur: psycopg2.extensions.cursor):
+    conn.commit()
+    cur.close()
+    conn.close()
