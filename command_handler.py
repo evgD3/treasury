@@ -1,15 +1,16 @@
 import datetime
 
-from db_manager import init_db
 from db_manager import add_transaction
+from db_manager import close_db
+from db_manager import edit_transaction
+from db_manager import init_db
 from db_manager import select_all
 from db_manager import select_by_category
 from db_manager import select_by_date
-from db_manager import close_db
 
+from printer import print_by_date
 from printer import print_category
 from printer import print_resent
-from printer import print_by_date
 
 
 def command(argv: list) -> None:
@@ -33,6 +34,22 @@ def command(argv: list) -> None:
         except IndexError:
             category = input('category> ').strip()
         add_transaction(conn, cur, amount, category)
+
+    elif action == '-e':
+        try:
+            transaction_id = argv[2]
+        except IndexError:
+            transaction_id = int(input('id> ').strip())
+        try:
+            amount = argv[3]
+        except IndexError:
+            amount = int(input('amount> ').strip())
+        try:
+            category = argv[4]
+        except IndexError:
+            category = input('category> ').strip()
+        edit_transaction(conn, cur, transaction_id, amount, category)
+
 
     elif action == '-pc':
         try:

@@ -42,8 +42,17 @@ def select_by_category(cur: psycopg2.extensions.cursor, category: str) -> list:
     output = cur.fetchall()
     return output
 
+def edit_transaction(conn: psycopg2.extensions.connection,
+                     cur: psycopg2.extensions.cursor,
+                     transaction_id: int, amount: int,
+                     category: str) -> None:
+    cur.execute(f'''UPDATE main_account
+                    SET (amount, category) = ({amount}, '{category}' 
+                    WHERE id = {transaction_id}''')
+    conn.commit()
+
 def close_db(conn: psycopg2.extensions.connection,
-             cur: psycopg2.extensions.cursor):
+             cur: psycopg2.extensions.cursor) -> None:
     conn.commit()
     cur.close()
     conn.close()
