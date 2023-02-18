@@ -23,7 +23,7 @@ def command(argv: list) -> None:
     if action == '-p':
         print_resent(select_all(cur))
 
-    if action == '-a':
+    elif action == '-a':
         try:
             amount = argv[2]
         except IndexError:
@@ -34,14 +34,14 @@ def command(argv: list) -> None:
             category = input('category> ').strip()
         add_transaction(conn, cur, amount, category)
 
-    if action == '-pc':
+    elif action == '-pc':
         try:
             category = argv[2]
         except IndexError:
             category = input('category> ').strip()
         print_category(select_by_category(cur, category))
 
-    if action == '-pm':
+    elif action == '-pm':
         now = datetime.date.today()
         year = now.year
         month = now.month
@@ -53,10 +53,26 @@ def command(argv: list) -> None:
             to_date = (f'{year}-{month+1}-01')
         print_by_date(select_by_date(cur, from_date, to_date))
 
-    if action == '-py':
+    elif action == '-py':
         year = datetime.date.today().year
         from_date = f'{year}-01-01'
         to_date = f'{year+1}-01-01'
         print_by_date(select_by_date(cur, from_date, to_date))
+
+    elif action == '-h':
+        print(f'''
+        usage: treasury [-action]
+
+        actions:
+          -h                show this help message
+          -p                print resent transactions
+          -a                add transaction
+          -pc [category]    print resent transactions for category
+          -pm               print transactions for this month
+          -py               print transactions for this year
+              ''')
+
+    else:
+        print(f'invalid action "{action}"\ntry "-h" for help')
     
     close_db(conn, cur)
