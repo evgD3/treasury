@@ -12,7 +12,7 @@ def init_db() -> tuple:
                     category VARCHAR (32) NOT NULL)''')
     cur.execute(''' CREATE TABLE IF NOT EXISTS balanse_table
                     (id SERIAL PRIMARY KEY,
-                    date DATE DEFAULT,
+                    date DATE,
                     balanse NUMERIC NOT NULL)''')
     conn.commit()
     return conn, cur
@@ -29,20 +29,23 @@ def add_transaction(conn: psycopg2.extensions.connection,
 def select_by_date(cur: psycopg2.extensions.cursor,
                    from_date: datetime.date, to_date: datetime.date) -> list:
     cur.execute(f'''SELECT * FROM main_account
-                    WHERE date>'{from_date}' AND date<'{to_date}' ''')
+                    WHERE date>'{from_date}' AND date<'{to_date}'
+                    ORDER BY id''')
     output = cur.fetchall()
     return output
 
 
 def select_all(cur: psycopg2.extensions.cursor) -> list:
-    cur.execute('''SELECT * FROM main_account''')
+    cur.execute('''SELECT * FROM main_account
+                   ORDER BY id''')
     output = cur.fetchall()
     return output
 
 
 def select_by_category(cur: psycopg2.extensions.cursor, category: str) -> list:
     cur.execute(f'''SELECT * FROM main_account
-                    WHERE category = '{category}' ''')
+                    WHERE category = '{category}'
+                    ORDER BY id''')
     output = cur.fetchall()
     return output
 
@@ -63,7 +66,8 @@ def write_balanse(conn: psycopg2.extensions.connection,
     conn.commit()
 
 def get_balanse_list(cur: psycopg2.extensions.cursor) -> list:
-    cur.execute('''SELECT * FROM balanse_table''')
+    cur.execute('''SELECT * FROM balanse_table
+                   ORDER BY id''')
     output = cur.fetchall()
     return output
 
