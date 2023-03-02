@@ -10,10 +10,9 @@ def init_db() -> tuple:
                     amount NUMERIC NOT NULL,
                     date DATE DEFAULT CURRENT_TIMESTAMP,
                     category VARCHAR (32) NOT NULL)''')
-    cur.execute(''' CREATE TABLE IF NOT EXISTS balanse_table
+    cur.execute(''' CREATE TABLE IF NOT EXISTS balance_table
                     (id SERIAL PRIMARY KEY,
-                    date DATE,
-                    balanse NUMERIC NOT NULL)''')
+                    balance NUMERIC NOT NULL)''')
     conn.commit()
     return conn, cur
 
@@ -58,15 +57,14 @@ def edit_transaction(conn: psycopg2.extensions.connection,
                     WHERE id = {transaction_id}''')
     conn.commit()
 
-def write_balanse(conn: psycopg2.extensions.connection,
-                  cur: psycopg2.extensions.cursor,
-                  balanse: int, date: datetime.date) -> None:
-    cur.execute(f'''INSERT INTO balanse_table (date, balanse)
-                    VALUES ({balanse}, '{date}' ''')
+def write_balance(conn: psycopg2.extensions.connection,
+                  cur: psycopg2.extensions.cursor, balance: int) -> None:
+    cur.execute(f'''INSERT INTO balance_table (balance)
+                    VALUES ({balance},''')
     conn.commit()
 
-def get_balanse_list(cur: psycopg2.extensions.cursor) -> list:
-    cur.execute('''SELECT * FROM balanse_table
+def get_balance_list(cur: psycopg2.extensions.cursor) -> list:
+    cur.execute('''SELECT * FROM balance_table
                    ORDER BY id''')
     output = cur.fetchall()
     return output
