@@ -29,14 +29,14 @@ def select_by_date(cur: psycopg2.extensions.cursor,
                    from_date: datetime.date, to_date: datetime.date) -> list:
     cur.execute(f'''SELECT * FROM main_account
                     WHERE date>'{from_date}' AND date<'{to_date}'
-                    ORDER BY id''')
+                    ORDER BY id DESC''')
     output = cur.fetchall()
     return output
 
 
 def select_all(cur: psycopg2.extensions.cursor) -> list:
     cur.execute('''SELECT * FROM main_account
-                   ORDER BY id''')
+                   ORDER BY id DESC''')
     output = cur.fetchall()
     return output
 
@@ -44,7 +44,7 @@ def select_all(cur: psycopg2.extensions.cursor) -> list:
 def select_by_category(cur: psycopg2.extensions.cursor, category: str) -> list:
     cur.execute(f'''SELECT * FROM main_account
                     WHERE category = '{category}'
-                    ORDER BY id''')
+                    ORDER BY id DESC''')
     output = cur.fetchall()
     return output
 
@@ -60,12 +60,12 @@ def edit_transaction(conn: psycopg2.extensions.connection,
 def write_balance(conn: psycopg2.extensions.connection,
                   cur: psycopg2.extensions.cursor, balance: int) -> None:
     cur.execute(f'''INSERT INTO balance_table (balance)
-                    VALUES ({balance},''')
+                    VALUES ({balance})''')
     conn.commit()
 
 def get_balance_list(cur: psycopg2.extensions.cursor) -> list:
     cur.execute('''SELECT * FROM balance_table
-                   ORDER BY id''')
+                   ORDER BY id DESC''')
     output = cur.fetchall()
     return output
 

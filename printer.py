@@ -1,7 +1,6 @@
 def print_resent(transactions: list, balance_list: list) -> None:
     balance = balance_list[0][1]
     transactions = transactions[-10:]
-    transactions = transactions[::-1]
     print(f'\033[34mBALANCE: {balance}')
     print(f'\033[34m[{"id":<5}][{"amount":<7}][{"date":<11}][{"type":<15}]')
     for i in transactions:

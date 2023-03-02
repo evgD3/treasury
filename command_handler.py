@@ -28,7 +28,7 @@ def command(argv: list) -> None:
 
     elif action == '-a':
         try:
-            amount = argv[2]
+            amount = int(argv[2])
         except IndexError:
             amount = int(input('amount> ').strip())
         try:
