@@ -96,6 +96,7 @@ def command(argv: list) -> None:
           -pc [category]    print resent transactions for category
           -pm               print transactions for this month
           -py               print transactions for this year
+          -pa               print all exist transactions
               ''')
 
     elif action == '-pms':

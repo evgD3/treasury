@@ -7,3 +7,4 @@ the following options are now available:
 - display a list of all operations
 - show transactions list for the selected category
 - show transactions list for the current month
+- show all transactions
