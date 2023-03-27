@@ -10,6 +10,7 @@ from db_manager import select_by_category
 from db_manager import select_by_date
 from db_manager import write_balance
 
+from printer import print_all
 from printer import print_by_date
 from printer import print_category
 from printer import print_resent
@@ -80,6 +81,9 @@ def command(argv: list) -> None:
         from_date = f'{year}-01-01'
         to_date = f'{year+1}-01-01'
         print_by_date(select_by_date(cur, from_date, to_date))
+
+    elif action == '-pa':
+        print_all(select_all(cur), get_balance_list(cur))
 
     elif action == '-h':
         print(f'''
