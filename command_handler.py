@@ -10,7 +10,7 @@ from db_manager import select_by_category
 from db_manager import select_by_date
 from db_manager import write_balance
 
-from printer import print_all
+from printer import print_all, print_stats
 from printer import print_by_date
 from printer import print_category
 from printer import print_resent
@@ -68,22 +68,61 @@ def command(argv: list) -> None:
         now = datetime.date.today()
         year = now.year
         month = now.month
-        from_date = (f'{year}-{month}-01')
-        if month == 12:
-            to_date = (f'{year+1}-01-01')
-
+        if month < 10:
+            from_date = datetime.date.fromisoformat(f'{year}-0{month}-01')
         else:
-            to_date = (f'{year}-{month+1}-01')
+            from_date = datetime.date.fromisoformat(f'{year}-{month}-01')
+        if month == 12:
+            to_date = datetime.date.fromisoformat(f'{year+1}-01-01')
+        else:
+            if month < 9:
+                to_date = datetime.date.fromisoformat(f'{year}-0{month+1}-01')
+            else:
+                to_date = datetime.date.fromisoformat(f'{year}-{month+1}-01')
         print_by_date(select_by_date(cur, from_date, to_date))
 
     elif action == '-py':
         year = datetime.date.today().year
-        from_date = f'{year}-01-01'
-        to_date = f'{year+1}-01-01'
+        from_date = datetime.date.fromisoformat(f'{year}-01-01')
+        to_date = datetime.date.fromisoformat(f'{year+1}-01-01')
         print_by_date(select_by_date(cur, from_date, to_date))
 
     elif action == '-pa':
         print_all(select_all(cur), get_balance_list(cur))
+
+    elif action == '-ps':
+        from_date = input('from (yyyy-mm-dd)> ').strip()
+        from_date = datetime.date.fromisoformat(from_date)
+        to_date = input('to (yyyy-mm-dd)> ').strip()
+        to_date = datetime.date.fromisoformat(to_date)
+        print_stats(select_by_date(cur, from_date, to_date),
+                    from_date, to_date)
+
+    elif action == '-pms':
+        now = datetime.date.today()
+        year = now.year
+        month = now.month
+        if month < 10:
+            from_date = datetime.date.fromisoformat(f'{year}-0{month}-01')
+        else:
+            from_date = datetime.date.fromisoformat(f'{year}-{month}-01')
+        if month == 12:
+            to_date = datetime.date.fromisoformat(f'{year+1}-01-01')
+        else:
+            if month < 9:
+                to_date = datetime.date.fromisoformat(f'{year}-0{month+1}-01')
+            else:
+                to_date = datetime.date.fromisoformat(f'{year}-{month+1}-01')
+        print_stats(select_by_date(cur, from_date, to_date),
+                    from_date, to_date)
+
+    elif action == '-pys':
+        year = datetime.date.today().year
+        from_date = datetime.date.fromisoformat(f'{year}-01-01')
+        to_date = datetime.date.fromisoformat(f'{year+1}-01-01')
+        print_stats(select_by_date(cur, from_date, to_date),
+                    from_date, to_date)
+
 
     elif action == '-h':
         print(f'''
@@ -98,18 +137,6 @@ def command(argv: list) -> None:
           -py               print transactions for this year
           -pa               print all exist transactions
               ''')
-
-    elif action == '-pms':
-        now = datetime.date.today()
-        year = now.year
-        month = now.month
-        from_date = (f'{year}-{month}-01')
-        if month == 12:
-            to_date = (f'{year+1}-01-01')
-
-        else:
-            to_date = (f'{year}-{month+1}-01')
-        print_stats(select_by_date(cur, from_date, to_date))
 
     else:
         print(f'invalid action "{action}"\ntry "-h" for help')
