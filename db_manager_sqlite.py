@@ -52,24 +52,24 @@ def edit_transaction(conn: sqlite3.Connection,
                      transaction_id: int, amount: int,
                      category: str) -> None:
     cur.execute(f'''UPDATE main_account
-                    WHERE id = '{transaction_id}'
-                    SET (amount, category) = ({amount}, '{category}' ''')
+                    SET (amount, category) = ({amount}, '{category}')
+                    WHERE id = {transaction_id}''')
     conn.commit()
 
-def write_balance(conn,
-                  cur, balance: int) -> None:
+def write_balance(conn: sqlite3.Connection,
+                  cur: sqlite3.Cursor, balance: int) -> None:
     cur.execute(f'''INSERT INTO balance_table (balance)
                     VALUES ({balance})''')
     conn.commit()
 
-def get_balance_list(cur) -> list:
+def get_balance_list(cur: sqlite3.Cursor) -> list:
     cur.execute('''SELECT * FROM balance_table
                    ORDER BY id DESC''')
     output = cur.fetchall()
     return output
 
-def close_db(conn,
-             cur) -> None:
+def close_db(conn: sqlite3.Connection,
+             cur: sqlite3.Cursor) -> None:
     conn.commit()
     cur.close()
     conn.close()
