@@ -53,8 +53,8 @@ def edit_transaction(conn: psycopg2.extensions.connection,
                      transaction_id: int, amount: int,
                      category: str) -> None:
     cur.execute(f'''UPDATE main_account
-                    SET (amount, category) = ({amount}, '{category}' 
-                    WHERE id = {transaction_id}''')
+                    SET (amount, category) = ('{amount}', '{category}') 
+                    WHERE id = '{transaction_id}' ''')
     conn.commit()
 
 def write_balance(conn: psycopg2.extensions.connection,
