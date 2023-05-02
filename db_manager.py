@@ -48,14 +48,16 @@ def select_by_category(cur: psycopg2.extensions.cursor, category: str) -> list:
     output = cur.fetchall()
     return output
 
+
 def edit_transaction(conn: psycopg2.extensions.connection,
                      cur: psycopg2.extensions.cursor,
                      transaction_id: int, amount: int,
                      category: str) -> None:
     cur.execute(f'''UPDATE main_account
-                    SET (amount, category) = ('{amount}', '{category}') 
+                    SET (amount, category) = ('{amount}', '{category}')
                     WHERE id = '{transaction_id}' ''')
     conn.commit()
+
 
 def write_balance(conn: psycopg2.extensions.connection,
                   cur: psycopg2.extensions.cursor, balance: int) -> None:
@@ -63,11 +65,13 @@ def write_balance(conn: psycopg2.extensions.connection,
                     VALUES ({balance})''')
     conn.commit()
 
+
 def get_balance_list(cur: psycopg2.extensions.cursor) -> list:
     cur.execute('''SELECT * FROM balance_table
                    ORDER BY id DESC''')
     output = cur.fetchall()
     return output
+
 
 def close_db(conn: psycopg2.extensions.connection,
              cur: psycopg2.extensions.cursor) -> None:

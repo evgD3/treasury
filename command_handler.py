@@ -18,16 +18,14 @@ from printer import print_resent
 
 def command(argv: list) -> None:
     conn, cur = init_db()
-    
+
     try:
         action = argv[1]
     except IndexError:
         action = input('action > ').strip()
 
-
     if action == '-p':
         print_resent(select_all(cur), get_balance_list(cur))
-
 
     elif action == '-a':
         try:
@@ -42,7 +40,6 @@ def command(argv: list) -> None:
         balance = get_balance_list(cur)
         new_balance = balance[0][1] + amount
         write_balance(conn, cur, new_balance)
-
 
     elif action == '-e':
         try:
@@ -59,14 +56,12 @@ def command(argv: list) -> None:
             category = input('category> ').strip()
         edit_transaction(conn, cur, transaction_id, amount, category)
 
-
     elif action == '-pc':
         try:
             category = argv[2]
         except IndexError:
             category = input('category> ').strip()
         print_category(select_by_category(cur, category))
-
 
     elif action == '-pm':
         now = datetime.date.today()
@@ -85,17 +80,14 @@ def command(argv: list) -> None:
                 to_date = datetime.date.fromisoformat(f'{year}-{month+1}-01')
         print_by_date(select_by_date(cur, from_date, to_date))
 
-
     elif action == '-py':
         year = datetime.date.today().year
         from_date = datetime.date.fromisoformat(f'{year}-01-01')
         to_date = datetime.date.fromisoformat(f'{year+1}-01-01')
         print_by_date(select_by_date(cur, from_date, to_date))
 
-
     elif action == '-pa':
         print_all(select_all(cur), get_balance_list(cur))
-
 
     elif action == '-ps':
         from_date = input('from (yyyy-mm-dd)> ').strip()
@@ -104,7 +96,6 @@ def command(argv: list) -> None:
         to_date = datetime.date.fromisoformat(to_date)
         print_stats(select_by_date(cur, from_date, to_date),
                     from_date, to_date)
-
 
     elif action == '-pms':
         now = datetime.date.today()
@@ -124,7 +115,6 @@ def command(argv: list) -> None:
         print_stats(select_by_date(cur, from_date, to_date),
                     from_date, to_date)
 
-
     elif action == '-pys':
         year = datetime.date.today().year
         from_date = datetime.date.fromisoformat(f'{year}-01-01')
@@ -132,15 +122,13 @@ def command(argv: list) -> None:
         print_stats(select_by_date(cur, from_date, to_date),
                     from_date, to_date)
 
-
-    elif action ==  '-pas':
+    elif action == '-pas':
         from_date = datetime.date.fromisoformat('1970-01-01')
         to_date = datetime.date.today()
         print_stats(select_all(cur), from_date, to_date)
 
-
     elif action == '-h':
-        print(f'''
+        print('''
         usage: treasury [-action]
 
         actions:
@@ -158,5 +146,5 @@ def command(argv: list) -> None:
 
     else:
         print(f'invalid action "{action}"\ntry "-h" for help')
-    
+
     close_db(conn, cur)

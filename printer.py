@@ -1,5 +1,6 @@
 import datetime
 
+
 def print_resent(transactions: list, balance_list: list) -> None:
     balance = balance_list[0][1]
     transactions = transactions[:10]
@@ -10,6 +11,7 @@ def print_resent(transactions: list, balance_list: list) -> None:
             print(f'\033[92m[{i[0]:<5}][{i[1]:<7}][{i[2]} ][{i[3]:<15}]')
         else:
             print(f'\033[31m[{i[0]:<5}][{i[1]:<7}][{i[2]} ][{i[3]:<15}]')
+
 
 def print_all(transactions: list, balance_list: list) -> None:
     balance = balance_list[0][1]
@@ -30,6 +32,7 @@ def print_all(transactions: list, balance_list: list) -> None:
         else:
             print(f'\033[31m[{i[0]:<5}][{i[1]:<7}][{i[2]} ][{i[3]:<15}]')
 
+
 def print_category(transactions: list) -> None:
     ALL = 0
     for i in transactions:
@@ -44,6 +47,7 @@ def print_category(transactions: list) -> None:
             print(f'\033[92m[{i[3]:<15}][{i[2]} ][{i[1]:<7}][{i[0]:<5}]')
         else:
             print(f'\033[91m[{i[3]:<15}][{i[2]} ][{i[1]:<7}][{i[0]:<5}]')
+
 
 def print_by_date(transactions: list) -> None:
     income = 0
@@ -60,6 +64,7 @@ def print_by_date(transactions: list) -> None:
             print(f'\033[92m[{i[0]:<5}][{i[1]:<7}][{i[2]} ][{i[3]:<15}]')
         else:
             print(f'\033[31m[{i[0]:<5}][{i[1]:<7}][{i[2]} ][{i[3]:<15}]')
+
 
 def print_stats(transactions: list, from_date: datetime.date,
                 to_date: datetime.date) -> None:
@@ -80,7 +85,7 @@ def print_stats(transactions: list, from_date: datetime.date,
     print(f'\033[34mDAYS: {period}  ({from_date} -> {to_date})')
     print(f'\033[34mCOUNT TRANSACTIONS FOR PERIOD: {count_transactions}')
     print(f'\033[92mINCOME: {income} ' f'\033[91mCOSTS: {costs}')
-    print(f'\033[34m[type           ][amount ]')
+    print('\033[34m[type           ][amount ]')
     for i in categories:
         if categories[i] > 0:
             print(f'\033[92m[{i:<15}][{categories[i]:<7}]')
