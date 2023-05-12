@@ -34,6 +34,17 @@ def select_by_date(cur: psycopg2.extensions.cursor,
     return output
 
 
+def select_groups(cur: psycopg2.extensions.cursor,
+                  from_date: datetime.date, to_date: datetime.date) -> list:
+    cur.execute(f'''SELECT category, SUM(amount) as grand_total
+                    FROM main_account
+                    WHERE date>'{from_date}' AND date<'{to_date}'
+                    GROUP BY category
+                    ORDER BY grand_total''')
+    output = cur.fetchall()
+    return output
+
+
 def select_all(cur: psycopg2.extensions.cursor) -> list:
     cur.execute('''SELECT * FROM main_account
                    ORDER BY id DESC''')
