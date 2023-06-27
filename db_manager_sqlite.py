@@ -26,22 +26,36 @@ def add_transaction(conn: sqlite3.Connection, cur: sqlite3.Cursor,
 
 def select_by_date(cur: sqlite3.Cursor,
                    from_date: datetime.date, to_date: datetime.date) -> list:
-    cur.execute(f'''SELECT * FROM main_account
+    cur.execute(f'''SELECT id, amount, date(date), category
+                    FROM main_account
                     WHERE date>'{from_date}' AND date<'{to_date}'
                     ORDER BY id DESC''')
     output = cur.fetchall()
     return output
 
 
+def select_groups(cur: sqlite3.Cursor, 
+                 from_date: datetime.date, to_date: datetime.date) -> list:
+    cur.execute(f'''SELECT category, SUM(amount) as grand_total
+                    FROM main_account
+                    WHERE date>'{from_date}' AND date<'{to_date}'
+                    GROUP BY category
+                    ORDER BY grand_total''')
+    output = cur.fetchall()
+    return output
+
+
 def select_all(cur: sqlite3.Cursor) -> list:
-    cur.execute('''SELECT * FROM main_account
+    cur.execute('''SELECT id, amount, date(date), category
+                   FROM main_account
                    ORDER BY id DESC''')
     output = cur.fetchall()
     return output
 
 
 def select_by_category(cur: sqlite3.Cursor, category: str) -> list:
-    cur.execute(f'''SELECT * FROM main_account
+    cur.execute(f'''SELECT id, amount, date(date), category
+                    FROM main_account
                     WHERE category = '{category}'
                     ORDER BY id DESC''')
     output = cur.fetchall()

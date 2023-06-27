@@ -1,15 +1,15 @@
 import datetime
 
-from db_manager import add_transaction
-from db_manager import close_db
-from db_manager import edit_transaction
-from db_manager import get_balance_list
-from db_manager import init_db
-from db_manager import select_all
-from db_manager import select_by_category
-from db_manager import select_by_date
-from db_manager import select_groups
-from db_manager import write_balance
+from db_manager_sqlite import add_transaction
+from db_manager_sqlite import close_db
+from db_manager_sqlite import edit_transaction
+from db_manager_sqlite import get_balance_list
+from db_manager_sqlite import init_db
+from db_manager_sqlite import select_all
+from db_manager_sqlite import select_by_category
+from db_manager_sqlite import select_by_date
+from db_manager_sqlite import select_groups
+from db_manager_sqlite import write_balance
 
 from printer import print_all, print_stats
 from printer import print_by_date
