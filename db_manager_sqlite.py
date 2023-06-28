@@ -5,16 +5,19 @@ import datetime
 def init_db() -> tuple:
     conn = sqlite3.connect('treasury_data.db')
     cur = conn.cursor()
-    cur.execute(''' CREATE TABLE IF NOT EXISTS main_account
-                    (id INTEGER PRIMARY KEY,
-                    amount NUMERIC NOT NULL,
-                    date DATE DEFAULT CURRENT_TIMESTAMP,
-                    category VARCHAR (32) NOT NULL)''')
-    cur.execute(''' CREATE TABLE IF NOT EXISTS balance_table
-                    (id INTEGER PRIMARY KEY,
-                    balance NUMERIC NOT NULL)''')
     conn.commit()
     return conn, cur
+
+
+def create_account(conn: sqlite3.Connection, cur: sqlite3.Cursor,
+                   account_name: str) -> None:
+    cur.execute(f'''CREATE TABLE {account_name}
+                   (id INTEGER PRIMARY KEY,
+                    currency VARCHAR (10) NOT NULL,
+                    amount REAL NOT NULL,
+                    category VARCHAR (32) NOT NULL,
+                    comment VARCHAR (256) NOT NULL)''')
+    conn.commit()
 
 
 def add_transaction(conn: sqlite3.Connection, cur: sqlite3.Cursor,
