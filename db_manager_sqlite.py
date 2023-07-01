@@ -26,7 +26,7 @@ def add_transaction(conn: sqlite3.Connection, cur: sqlite3.Cursor,
                     amount: float, category: str, comment: str) -> None:
     cur.execute(f'''INSERT INTO {account_name}
                     (currency, amount, category, comment)
-                    VALUES ({currency}, {amount}, '{category}, {comment}')''')
+                    VALUES ('{currency}', {amount}, '{category}', '{comment}')''')
     conn.commit()
 
 
