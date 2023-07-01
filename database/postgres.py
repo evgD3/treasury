@@ -1,18 +1,22 @@
-import sqlite3
+import psycopg2
 import datetime
 
 
+import psycopg2.extensions
+
+
 def init_db() -> tuple:
-    conn = sqlite3.connect('treasury_data.db')
+    conn = psycopg2.connect('dbname=test_treasurydb user=postgres')
     cur = conn.cursor()
     return conn, cur
 
 
-def create_account(conn: sqlite3.Connection, cur: sqlite3.Cursor,
+def create_account(conn: psycopg2.extensions.connection,
+                   cur: psycopg2.extensions.cursor,
                    account_name: str) -> None:
     cur.execute(f'''
                 CREATE TABLE {account_name}
-                (id INTEGER PRIMARY KEY,
+                (id SERIAL PRIMARY KEY,
                 currency VARCHAR (10) NOT NULL,
                 amount REAL NOT NULL,
                 date DATE DEFAULT CURRENT_TIMESTAMP,
@@ -22,21 +26,24 @@ def create_account(conn: sqlite3.Connection, cur: sqlite3.Cursor,
     conn.commit()
 
 
-def add_transaction(conn: sqlite3.Connection, cur: sqlite3.Cursor,
+def add_transaction(conn: psycopg2.extensions.connection,
+                    cur: psycopg2.extensions.cursor,
                     account_name: str, currency: str,
                     amount: float, category: str, comment: str) -> None:
     cur.execute(f'''
                 INSERT INTO {account_name}
                 (currency, amount, category, comment)
-                VALUES ('{currency}', {amount}, '{category}', '{comment}')
+                VALUES
+                ('{currency}', {amount}, '{category}', '{comment}')
                 ''')
     conn.commit()
 
 
-def select_by_date(cur: sqlite3.Cursor, from_date: datetime.date,
-                   to_date: datetime.date, account_name: str) -> list:
+def select_by_date(cur: psycopg2.extensions.cursor,
+                   from_date: datetime.date, to_date: datetime.date,
+                   account_name: str) -> list:
     cur.execute(f'''
-                SELECT id, amount, date(date), category
+                SELECT id, amount, date, category
                 FROM {account_name}
                 WHERE date>'{from_date}' AND date<'{to_date}'
                 ORDER BY id DESC
@@ -45,8 +52,9 @@ def select_by_date(cur: sqlite3.Cursor, from_date: datetime.date,
     return output
 
 
-def select_groups(cur: sqlite3.Cursor, from_date: datetime.date,
-                  to_date: datetime.date, account_name: str) -> list:
+def select_groups(cur: psycopg2.extensions.cursor,
+                  from_date: datetime.date, to_date: datetime.date,
+                  account_name: str) -> list:
     cur.execute(f'''
                 SELECT category, SUM(amount) as grand_total
                 FROM {account_name}
@@ -58,9 +66,9 @@ def select_groups(cur: sqlite3.Cursor, from_date: datetime.date,
     return output
 
 
-def select_all(cur: sqlite3.Cursor, account_name: str) -> list:
+def select_all(cur: psycopg2.extensions.cursor, account_name: str) -> list:
     cur.execute(f'''
-                SELECT id, currency, amount, date(date), category
+                SELECT id, currency, amount, date, category
                 FROM {account_name}
                 ORDER BY id DESC
                 ''')
@@ -68,10 +76,10 @@ def select_all(cur: sqlite3.Cursor, account_name: str) -> list:
     return output
 
 
-def select_by_category(cur: sqlite3.Cursor, category: str,
-                       account_name: str) -> list:
+def select_by_category(cur: psycopg2.extensions.cursor,
+                       account_name: str, category: str) -> list:
     cur.execute(f'''
-                SELECT id, amount, date(date), category
+                SELECT id, amount, date, category
                 FROM {account_name}
                 WHERE category = '{category}'
                 ORDER BY id DESC
@@ -80,19 +88,21 @@ def select_by_category(cur: sqlite3.Cursor, category: str,
     return output
 
 
-def edit_transaction(conn: sqlite3.Connection, cur: sqlite3.Cursor,
+def edit_transaction(conn: psycopg2.extensions.connection,
+                     cur: psycopg2.extensions.cursor,
                      account_name: str, transaction_id: int, amount: float,
                      category: str, comment: str) -> None:
     cur.execute(f'''
                 UPDATE {account_name}
                 SET (amount, category, comment) =
-                ({amount}, '{category}', '{comment}')
-                WHERE id = {transaction_id}''')
+                ('{amount}', '{category}', '{comment}')
+                WHERE id = '{transaction_id}'
+                ''')
     conn.commit()
 
 
-def close_db(conn: sqlite3.Connection,
-             cur: sqlite3.Cursor) -> None:
+def close_db(conn: psycopg2.extensions.connection,
+             cur: psycopg2.extensions.cursor) -> None:
     conn.commit()
     cur.close()
     conn.close()
