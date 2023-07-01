@@ -1,10 +1,10 @@
 import sys
 
-import command_handler
+import treasury_cli
 
 
 def main():
-    command_handler.command(sys.argv)
+    treasury_cli.command(sys.argv)
 
 
 if __name__ == '__main__':
