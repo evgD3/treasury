@@ -68,8 +68,8 @@ def select_all(cur: sqlite3.Cursor, account_name: str) -> list:
     return output
 
 
-def select_by_category(cur: sqlite3.Cursor, category: str,
-                       account_name: str) -> list:
+def select_by_category(cur: sqlite3.Cursor, account_name: str,
+                       category: str) -> list:
     cur.execute(f'''
                 SELECT id, amount, date(date), category
                 FROM {account_name}

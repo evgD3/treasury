@@ -63,10 +63,12 @@ def command(argv: list) -> None:
 
     elif action == '-pc':
         try:
-            category = argv[2]
+            account = argv[2]
+            category = argv[3]
         except IndexError:
+            account = input('account> ').strip()
             category = input('category> ').strip()
-        print_category(select_by_category(cur, category))
+        print_category(select_by_category(cur, account, category))
 
     elif action == '-pm':
         now = datetime.date.today()
