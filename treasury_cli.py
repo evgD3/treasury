@@ -3,13 +3,11 @@ import datetime
 from database.sqlite3 import add_transaction
 from database.sqlite3 import close_db
 from database.sqlite3 import edit_transaction
-from database.sqlite3 import get_balance_list
 from database.sqlite3 import init_db
 from database.sqlite3 import select_all
 from database.sqlite3 import select_by_category
 from database.sqlite3 import select_by_date
 from database.sqlite3 import select_groups
-from database.sqlite3 import write_balance
 
 from printer import print_all, print_stats
 from printer import print_by_date
@@ -26,21 +24,23 @@ def command(argv: list) -> None:
         action = input('action > ').strip()
 
     if action == '-p':
-        print_resent(select_all(cur), get_balance_list(cur))
+        print_resent(select_all(cur, 'main'))
 
     elif action == '-a':
         try:
-            amount = int(argv[2])
+            account = argv[2]
+            amount = int(argv[3])
+            category = argv[4]
+            try:
+                comment = argv[5]
+            except IndexError:
+                comment = None
         except IndexError:
+            account = input('account> ').strip()
             amount = int(input('amount> ').strip())
-        try:
-            category = argv[3]
-        except IndexError:
             category = input('category> ').strip()
-        add_transaction(conn, cur, amount, category)
-        balance = get_balance_list(cur)
-        new_balance = balance[0][1] + amount
-        write_balance(conn, cur, new_balance)
+            comment = input('comment >').strip()
+        add_transaction(conn, cur, account, amount, category, comment)
 
     elif action == '-e':
         try:
@@ -88,7 +88,7 @@ def command(argv: list) -> None:
         print_by_date(select_by_date(cur, from_date, to_date))
 
     elif action == '-pa':
-        print_all(select_all(cur), get_balance_list(cur))
+        print_all(select_all(cur, 'main'))
 
     elif action == '-ps':
         from_date = input('from (yyyy-mm-dd)> ').strip()
