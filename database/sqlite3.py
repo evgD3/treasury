@@ -24,7 +24,7 @@ def create_account(conn: sqlite3.Connection, cur: sqlite3.Cursor,
 
 def add_transaction(conn: sqlite3.Connection, cur: sqlite3.Cursor,
                     account_name: str, currency: str,
-                    amount: float, category: str, comment: str) -> None:
+                    amount: float, category: str, comment: str|None) -> None:
     cur.execute(f'''
                 INSERT INTO {account_name}
                 (currency, amount, category, comment)
@@ -82,7 +82,7 @@ def select_by_category(cur: sqlite3.Cursor, category: str,
 
 def edit_transaction(conn: sqlite3.Connection, cur: sqlite3.Cursor,
                      account_name: str, transaction_id: int, amount: float,
-                     category: str, comment: str) -> None:
+                     category: str, comment: str|None) -> None:
     cur.execute(f'''
                 UPDATE {account_name}
                 SET (amount, category, comment) =

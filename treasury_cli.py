@@ -44,18 +44,22 @@ def command(argv: list) -> None:
 
     elif action == '-e':
         try:
-            transaction_id = argv[2]
+            account = argv[2]
+            transaction_id = argv[3]
+            amount = argv[4]
+            category = argv[5]
+            try:
+                comment = argv[5]
+            except IndexError:
+                comment = None
         except IndexError:
+            account = input('account> ').strip()
             transaction_id = int(input('id> ').strip())
-        try:
-            amount = argv[3]
-        except IndexError:
             amount = int(input('amount> ').strip())
-        try:
-            category = argv[4]
-        except IndexError:
             category = input('category> ').strip()
-        edit_transaction(conn, cur, transaction_id, amount, category)
+            comment = input('comment> ').strip()
+        edit_transaction(conn, cur, account, transaction_id, amount,
+                         category, comment)
 
     elif action == '-pc':
         try:
