@@ -33,8 +33,8 @@ def add_transaction(conn: sqlite3.Connection, cur: sqlite3.Cursor,
     conn.commit()
 
 
-def select_by_date(cur: sqlite3.Cursor, from_date: datetime.date,
-                   to_date: datetime.date, account_name: str) -> list:
+def select_by_date(cur: sqlite3.Cursor, account_name: str,
+                   from_date: datetime.date, to_date: datetime.date) -> list:
     cur.execute(f'''
                 SELECT id, amount, date(date), category
                 FROM {account_name}

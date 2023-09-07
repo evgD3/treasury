@@ -71,6 +71,10 @@ def command(argv: list) -> None:
         print_category(select_by_category(cur, account, category))
 
     elif action == '-pm':
+        try:
+            account = argv[2]
+        except IndexError:
+            account = input('account >').strip()
         now = datetime.date.today()
         year = now.year
         month = now.month
@@ -85,7 +89,7 @@ def command(argv: list) -> None:
                 to_date = datetime.date.fromisoformat(f'{year}-0{month+1}-01')
             else:
                 to_date = datetime.date.fromisoformat(f'{year}-{month+1}-01')
-        print_by_date(select_by_date(cur, from_date, to_date))
+        print_by_date(select_by_date(cur, account, from_date, to_date))
 
     elif action == '-py':
         year = datetime.date.today().year
