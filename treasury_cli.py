@@ -102,17 +102,29 @@ def command(argv: list) -> None:
         print_by_date(select_by_date(cur, account, from_date, to_date))
 
     elif action == '-pa':
-        print_all(select_all(cur, 'main'))
+        try:
+            account = argv[2]
+        except IndexError:
+            account = input('account >').strip()
+        print_all(select_all(cur, account))
 
     elif action == '-ps':
+        try:
+            account = argv[2]
+        except IndexError:
+            account = input('account >').strip()
         from_date = input('from (yyyy-mm-dd)> ').strip()
         from_date = datetime.date.fromisoformat(from_date)
         to_date = input('to (yyyy-mm-dd)> ').strip()
         to_date = datetime.date.fromisoformat(to_date)
-        print_stats(select_by_date(cur, from_date, to_date),
+        print_stats(select_by_date(cur, account, from_date, to_date),
                     from_date, to_date)
 
     elif action == '-pms':
+        try:
+            account = argv[2]
+        except IndexError:
+            account = input('account >').strip()
         now = datetime.date.today()
         year = now.year
         month = now.month
@@ -127,20 +139,28 @@ def command(argv: list) -> None:
                 to_date = datetime.date.fromisoformat(f'{year}-0{month+1}-01')
             else:
                 to_date = datetime.date.fromisoformat(f'{year}-{month+1}-01')
-        print_stats(select_by_date(cur, from_date, to_date),
+        print_stats(select_by_date(cur, account, from_date, to_date),
                     from_date, to_date)
 
     elif action == '-pys':
+        try:
+            account = argv[2]
+        except IndexError:
+            account = input('account >').strip()
         year = datetime.date.today().year
         from_date = datetime.date.fromisoformat(f'{year}-01-01')
         to_date = datetime.date.fromisoformat(f'{year+1}-01-01')
-        print_stats(select_by_date(cur, from_date, to_date),
+        print_stats(select_by_date(cur, account, from_date, to_date),
                     from_date, to_date)
 
     elif action == '-pas':
+        try:
+            account = argv[2]
+        except IndexError:
+            account = input('account >').strip()
         from_date = datetime.date.fromisoformat('1970-01-01')
         to_date = datetime.date.today()
-        print_stats(select_all(cur), from_date, to_date)
+        print_stats(select_all(cur, account), from_date, to_date)
 
     elif action == '-h':
         print('''
