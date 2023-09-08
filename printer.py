@@ -21,12 +21,15 @@ def print_all(transactions: list) -> None:
             costs += i[2]
     print(f'\033[92mINCOME: {income} '
           f'\033[91mCOSTS: {costs}')
-    print(f'\033[34m[{"id":<5}][{"amount":<7}][{"date":<11}][{"type":<15}]')
+    print(f'''\033[34m[{"id":<5}][{"CUR":<4}][{"amount":<9}]
+          [{"date":<11}][{"type":<15}]''')
     for i in transactions:
         if i[2] > 0:
-            print(f'\033[92m[{i[0]:<5}][{i[1]:<7}][{i[2]} ][{i[3]:<15}]')
+            print(f'''\033[92m[{i[0]:<5}][{i[1]:<4}]
+                  [{i[2]:<9}][{i[3]} ][{i[4]:<15}]''')
         else:
-            print(f'\033[31m[{i[0]:<5}][{i[1]:<7}][{i[2]} ][{i[3]:<15}]')
+            print(f'''\033[31m[{i[0]:<5}][{i[1]:<4}]
+                  [{i[2]:<9}][{i[3]} ][{i[4]:<15}]''')
 
 
 def print_category(transactions: list) -> None:
