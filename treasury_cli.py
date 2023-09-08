@@ -89,7 +89,7 @@ def command(argv: list) -> None:
         print_by_date(select_by_date(cur, account, from_date, to_date))
 
     elif action == '-pa':
-        print_all(select_all(cur, account))
+        print_all(account, select_all(cur, account))
 
     elif action == '-ps':
         from_date = input('from (yyyy-mm-dd) > ').strip()
