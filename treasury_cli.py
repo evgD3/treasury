@@ -25,7 +25,7 @@ def command(argv: list) -> None:
         action = input('action > ').strip()
 
     if action == '-p':
-        print_resent(select_all(cur, account))
+        print_resent(account, select_all(cur, account))
 
     elif action == '-a':
         try:
@@ -63,7 +63,7 @@ def command(argv: list) -> None:
             category = argv[3]
         except IndexError:
             category = input('category > ').strip()
-        print_category(select_by_category(cur, account, category))
+        print_category(account, select_by_category(cur, account, category))
 
     elif action == '-pm':
         now = datetime.date.today()
@@ -80,13 +80,15 @@ def command(argv: list) -> None:
                 to_date = datetime.date.fromisoformat(f'{year}-0{month+1}-01')
             else:
                 to_date = datetime.date.fromisoformat(f'{year}-{month+1}-01')
-        print_by_date(select_by_date(cur, account, from_date, to_date))
+        print_by_date(account, 
+                      select_by_date(cur, account, from_date, to_date))
 
     elif action == '-py':
         year = datetime.date.today().year
         from_date = datetime.date.fromisoformat(f'{year}-01-01')
         to_date = datetime.date.fromisoformat(f'{year+1}-01-01')
-        print_by_date(select_by_date(cur, account, from_date, to_date))
+        print_by_date(account,
+                      select_by_date(cur, account, from_date, to_date))
 
     elif action == '-pa':
         print_all(account, select_all(cur, account))

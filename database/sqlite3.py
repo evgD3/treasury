@@ -36,7 +36,7 @@ def add_transaction(conn: sqlite3.Connection, cur: sqlite3.Cursor,
 def select_by_date(cur: sqlite3.Cursor, account_name: str,
                    from_date: datetime.date, to_date: datetime.date) -> list:
     cur.execute(f'''
-                SELECT id, amount, date(date), category
+                SELECT id, amount, currency, date(date), category
                 FROM {account_name}
                 WHERE date>'{from_date}' AND date<'{to_date}'
                 ORDER BY id DESC
@@ -71,7 +71,7 @@ def select_all(cur: sqlite3.Cursor, account_name: str) -> list:
 def select_by_category(cur: sqlite3.Cursor, account_name: str,
                        category: str) -> list:
     cur.execute(f'''
-                SELECT id, amount, date(date), category
+                SELECT id, amount, date(date), category, currency
                 FROM {account_name}
                 WHERE category = '{category}'
                 ORDER BY id DESC
