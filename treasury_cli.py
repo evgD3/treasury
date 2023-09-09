@@ -98,7 +98,7 @@ def command(argv: list) -> None:
         from_date = datetime.date.fromisoformat(from_date)
         to_date = input('to (yyyy-mm-dd) > ').strip()
         to_date = datetime.date.fromisoformat(to_date)
-        print_stats(select_by_date(cur, account, from_date, to_date),
+        print_stats(account, select_by_date(cur, account, from_date, to_date),
                     from_date, to_date)
 
     elif action == '-pms':
@@ -116,20 +116,20 @@ def command(argv: list) -> None:
                 to_date = datetime.date.fromisoformat(f'{year}-0{month+1}-01')
             else:
                 to_date = datetime.date.fromisoformat(f'{year}-{month+1}-01')
-        print_stats(select_by_date(cur, account, from_date, to_date),
+        print_stats(account, select_by_date(cur, account, from_date, to_date),
                     from_date, to_date)
 
     elif action == '-pys':
         year = datetime.date.today().year
         from_date = datetime.date.fromisoformat(f'{year}-01-01')
         to_date = datetime.date.fromisoformat(f'{year+1}-01-01')
-        print_stats(select_by_date(cur, account, from_date, to_date),
+        print_stats(account, select_by_date(cur, account, from_date, to_date),
                     from_date, to_date)
 
     elif action == '-pas':
         from_date = datetime.date.fromisoformat('1970-01-01')
         to_date = datetime.date.today()
-        print_stats(select_all(cur, account), from_date, to_date)
+        print_stats(account, select_all(cur, account), from_date, to_date)
 
     elif action == '-h':
         print('''

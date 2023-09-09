@@ -86,22 +86,23 @@ def print_stats(account: str, transactions: list,
     income = 0
     costs = 0
     categories = {}
+    currency = transactions[1][2]
     for i in transactions:
         if i[1] > 0:
             income += i[1]
         else:
             costs += i[1]
-        if i[3] in categories:
-            categories[i[3]] += i[1]
+        if i[4] in categories:
+            categories[i[4]] += i[1]
         else:
-            categories[i[3]] = i[1]
+            categories[i[4]] = i[1]
     print(f'ACCOUNT  {account}')
     print(f'\033[34mDAYS: {period}  ({from_date} -> {to_date})')
     print(f'\033[34mCOUNT TRANSACTIONS FOR PERIOD: {count_transactions}')
     print(f'\033[92mINCOME: {income} ' f'\033[91mCOSTS: {costs}')
-    print('\033[34m[type           ][amount ]')
+    print('\033[34m[type           ][amount   ][CUR ]')
     for i in categories:
         if categories[i] > 0:
-            print(f'\033[92m[{i:<15}][{categories[i]:<7}]')
+            print(f'\033[92m[{i:<15}][{categories[i]:<9}][{currency:<4}]')
         else:
-            print(f'\033[91m[{i:<15}][{categories[i]:<7}]')
+            print(f'\033[91m[{i:<15}][{categories[i]:<9}][{currency:<4}]')
