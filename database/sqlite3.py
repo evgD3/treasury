@@ -2,44 +2,68 @@ import sqlite3
 import datetime
 
 
-def init_db() -> tuple:
+def init_db(conn: sqlite3.Connection, cur: sqlite3.Cursor) -> None:
+    cur.execute('''CREATE TABLE account IF NOT EXIST
+                (id SERIAL PRIMARY KEY,
+                name VARCHAR (128) NOT NULL,
+                currency VARCHAR (10) NOT NULL,
+                balance REAL NOT NULL,
+                description VARCHAR (255)
+                ''')
+    cur.execute('''CREATE TABLE category IF NOT EXIST
+                (id SERIAL PRIMARY KEY,
+                name VARCHAR (64) NOT NULL,
+                description VARCHAR (512)
+                ''')
+    cur.execute('''CREATE TABLE transaction IF NOT EXIST
+                (id SERIAL PRIMARY KEY,
+                account_id INTEGER REFERENCES account(id),
+                amount REAL NOT NULL,
+                date DATE DEFAULT CURRENT_TIMESTAMP,
+                category_id INTEGER REFERENCES category(id),
+                comment VARCHAR (256));
+                ''')
+    conn.commit()
+
+
+def init_connection() -> tuple:
     conn = sqlite3.connect('treasury_data.db')
     cur = conn.cursor()
     return conn, cur
 
 
 def create_account(conn: sqlite3.Connection, cur: sqlite3.Cursor,
-                   account_name: str) -> None:
+                   account_name: str, currency: str,
+                   description: str | None) -> None:
     cur.execute(f'''
-                CREATE TABLE {account_name}
-                (id INTEGER PRIMARY KEY,
-                currency VARCHAR (10) NOT NULL,
-                amount REAL NOT NULL,
-                date DATE DEFAULT CURRENT_TIMESTAMP,
-                category VARCHAR (32) NOT NULL,
-                comment VARCHAR (256) )
+                INSERT INTO account
+                (name, currency, balance, description)
+                VALUES ('{account_name}', '{currency}', '0.0',
+                '{description}')  
                 ''')
     conn.commit()
 
 
 def add_transaction(conn: sqlite3.Connection, cur: sqlite3.Cursor,
-                    account_name: str, currency: str,
-                    amount: float, category: str, comment: str|None) -> None:
+                    account_id: int, amount: float, category_id: int,
+                    comment: str | None) -> None:
     cur.execute(f'''
-                INSERT INTO {account_name}
-                (currency, amount, category, comment)
-                VALUES ('{currency}', {amount}, '{category}', '{comment}')
+                INSERT INTO transaction
+                (account_id, amount, category_id, comment)
+                VALUES ('{account_id}', {amount}, '{category_id}',
+                '{comment}')
                 ''')
     conn.commit()
 
 
-def select_by_date(cur: sqlite3.Cursor, account_name: str,
+def select_by_date(cur: sqlite3.Cursor, account_id: int,
                    from_date: datetime.date, to_date: datetime.date) -> list:
     cur.execute(f'''
-                SELECT id, amount, currency, date(date), category
-                FROM {account_name}
-                WHERE date>'{from_date}' AND date<'{to_date}'
-                ORDER BY id DESC
+                SELECT id, amount, date(date), name
+                FROM transaction INNER JOIN category
+                ON transaction.category_id = category.id
+                WHERE account_id = '{account_id}' AND
+                date>'{from_date}' AND date<'{to_date}'
                 ''')
     output = cur.fetchall()
     return output

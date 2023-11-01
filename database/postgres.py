@@ -5,10 +5,35 @@ import datetime
 import psycopg2.extensions
 
 
-def init_db() -> tuple:
+def init_connection() -> tuple:
     conn = psycopg2.connect('dbname=test_treasurydb user=postgres')
     cur = conn.cursor()
     return conn, cur
+
+
+def init_db(conn: psycopg2.extensions.connection,
+            cur: psycopg2.extensions.cursor) -> None:
+    cur.execute('''CREATE TABLE account IF NOT EXIST
+                (id SERIAL PRIMARY KEY,
+                name VARCHAR (128) NOT NULL,
+                currency VARCHAR (10) NOT NULL,
+                balance REAL NOT NULL,
+                description VARCHAR (255)
+                ''')
+    cur.execute('''CREATE TABLE category IF NOT EXIST
+                (id SERIAL PRIMARY KEY,
+                name VARCHAR (64) NOT NULL,
+                description VARCHAR (512)
+                ''')
+    cur.execute('''CREATE TABLE transaction IF NOT EXIST
+                (id SERIAL PRIMARY KEY,
+                account_id INTEGER REFERENCES account(id),
+                amount REAL NOT NULL,
+                date DATE DEFAULT CURRENT_TIMESTAMP,
+                category_id INTEGER REFERENCES category(id),
+                comment VARCHAR (256));
+                ''')
+    conn.commit()
 
 
 def create_account(conn: psycopg2.extensions.connection,
