@@ -2,6 +2,12 @@ import sqlite3
 import datetime
 
 
+def init_connection() -> tuple:
+    conn = sqlite3.connect('tt.db')
+    cur = conn.cursor()
+    return conn, cur
+
+
 def init_db(conn: sqlite3.Connection, cur: sqlite3.Cursor) -> None:
     cur.execute('''CREATE TABLE account
                 (id INTEGER PRIMARY KEY,
@@ -28,12 +34,6 @@ def init_db(conn: sqlite3.Connection, cur: sqlite3.Cursor) -> None:
     conn.commit()
 
 
-def init_connection() -> tuple:
-    conn = sqlite3.connect('tt.db')
-    cur = conn.cursor()
-    return conn, cur
-
-
 def create_account(conn: sqlite3.Connection, cur: sqlite3.Cursor,
                    account_name: str, currency: str,
                    description: str | None) -> None:
@@ -46,7 +46,7 @@ def create_account(conn: sqlite3.Connection, cur: sqlite3.Cursor,
     conn.commit()
 
 
-def create_transaction(conn: sqlite3.Connection, cur: sqlite3.Cursor,
+def create_deal(conn: sqlite3.Connection, cur: sqlite3.Cursor,
                     account_id: int, amount: float, category_id: int,
                     description: str | None) -> None:
     cur.execute(f'''
@@ -71,9 +71,9 @@ def create_category(conn: sqlite3.Connection, cur: sqlite3.Cursor,
 def select_by_date(cur: sqlite3.Cursor, account_id: int,
                    from_date: datetime.date, to_date: datetime.date) -> list:
     cur.execute(f'''
-                SELECT id, amount, date(date), name
+                SELECT deal.id, deal.amount, date(date), category.name
                 FROM deal INNER JOIN category
-                ON transaction.category_id = category.id
+                ON deal.category_id = category.id
                 WHERE account_id = '{account_id}' AND
                 date>'{from_date}' AND date<'{to_date}'
                 ''')
