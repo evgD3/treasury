@@ -58,6 +58,16 @@ def create_transaction(conn: sqlite3.Connection, cur: sqlite3.Cursor,
     conn.commit()
 
 
+def create_category(conn: sqlite3.Connection, cur: sqlite3.Cursor,
+                    category_name: str, category_description: str) -> None:
+    cur.execute(f'''
+                INSERT INTO category
+                (name, description)
+                VALUES ('{category_name}', '{category_description}')
+                ''')
+    conn.commit()
+
+
 def select_by_date(cur: sqlite3.Cursor, account_id: int,
                    from_date: datetime.date, to_date: datetime.date) -> list:
     cur.execute(f'''
