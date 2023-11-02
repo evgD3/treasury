@@ -15,7 +15,7 @@ def init_db(conn: sqlite3.Connection, cur: sqlite3.Cursor) -> None:
                 name VARCHAR(64) NOT NULL,
                 description VARCHAR(512) )
                 ''')
-    cur.execute('''CREATE TABLE transac
+    cur.execute('''CREATE TABLE deal
                 (id INTEGER PRIMARY KEY,
                 amount REAL NOT NULL,
                 date DATE DEFAULT CURRENT_TIMESTAMP,
@@ -50,7 +50,7 @@ def create_transaction(conn: sqlite3.Connection, cur: sqlite3.Cursor,
                     account_id: int, amount: float, category_id: int,
                     comment: str | None) -> None:
     cur.execute(f'''
-                INSERT INTO transaction
+                INSERT INTO deal
                 (account_id, amount, category_id, comment)
                 VALUES ('{account_id}', {amount}, '{category_id}',
                 '{comment}')
@@ -72,7 +72,7 @@ def select_by_date(cur: sqlite3.Cursor, account_id: int,
                    from_date: datetime.date, to_date: datetime.date) -> list:
     cur.execute(f'''
                 SELECT id, amount, date(date), name
-                FROM transaction INNER JOIN category
+                FROM deal INNER JOIN category
                 ON transaction.category_id = category.id
                 WHERE account_id = '{account_id}' AND
                 date>'{from_date}' AND date<'{to_date}'
