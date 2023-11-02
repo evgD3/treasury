@@ -19,11 +19,11 @@ def init_db(conn: sqlite3.Connection, cur: sqlite3.Cursor) -> None:
                 (id INTEGER PRIMARY KEY,
                 amount REAL NOT NULL,
                 date DATE DEFAULT CURRENT_TIMESTAMP,
-                comment VARCHAR(256),
+                description VARCHAR(256),
                 account_id INTEGER,
                 category_id INTEGER,
                 FOREIGN KEY(account_id) REFERENCES account(id),
-                FOREING KEY(category_id) REFERENCES category(id) )
+                FOREIGN KEY(category_id) REFERENCES category(id) )
                 ''')
     conn.commit()
 
@@ -48,22 +48,22 @@ def create_account(conn: sqlite3.Connection, cur: sqlite3.Cursor,
 
 def create_transaction(conn: sqlite3.Connection, cur: sqlite3.Cursor,
                     account_id: int, amount: float, category_id: int,
-                    comment: str | None) -> None:
+                    description: str | None) -> None:
     cur.execute(f'''
                 INSERT INTO deal
-                (account_id, amount, category_id, comment)
+                (account_id, amount, category_id, description)
                 VALUES ('{account_id}', {amount}, '{category_id}',
-                '{comment}')
+                '{description}')
                 ''')
     conn.commit()
 
 
 def create_category(conn: sqlite3.Connection, cur: sqlite3.Cursor,
-                    category_name: str, category_description: str) -> None:
+                    name: str, description: str) -> None:
     cur.execute(f'''
                 INSERT INTO category
                 (name, description)
-                VALUES ('{category_name}', '{category_description}')
+                VALUES ('{name}', '{description}')
                 ''')
     conn.commit()
 
