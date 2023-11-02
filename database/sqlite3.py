@@ -3,31 +3,33 @@ import datetime
 
 
 def init_db(conn: sqlite3.Connection, cur: sqlite3.Cursor) -> None:
-    cur.execute('''CREATE TABLE account IF NOT EXIST
-                (id SERIAL PRIMARY KEY,
-                name VARCHAR (128) NOT NULL,
-                currency VARCHAR (10) NOT NULL,
+    cur.execute('''CREATE TABLE account
+                (id INTEGER PRIMARY KEY,
+                name VARCHAR(128) NOT NULL,
+                currency VARCHAR(10) NOT NULL,
                 balance REAL NOT NULL,
-                description VARCHAR (255)
+                description VARCHAR(255) )
                 ''')
-    cur.execute('''CREATE TABLE category IF NOT EXIST
-                (id SERIAL PRIMARY KEY,
-                name VARCHAR (64) NOT NULL,
-                description VARCHAR (512)
+    cur.execute('''CREATE TABLE category
+                (id INTEGER PRIMARY KEY,
+                name VARCHAR(64) NOT NULL,
+                description VARCHAR(512) )
                 ''')
-    cur.execute('''CREATE TABLE transaction IF NOT EXIST
-                (id SERIAL PRIMARY KEY,
-                account_id INTEGER REFERENCES account(id),
+    cur.execute('''CREATE TABLE transac
+                (id INTEGER PRIMARY KEY,
                 amount REAL NOT NULL,
                 date DATE DEFAULT CURRENT_TIMESTAMP,
-                category_id INTEGER REFERENCES category(id),
-                comment VARCHAR (256));
+                comment VARCHAR(256),
+                account_id INTEGER,
+                category_id INTEGER,
+                FOREIGN KEY(account_id) REFERENCES account(id),
+                FOREING KEY(category_id) REFERENCES category(id) )
                 ''')
     conn.commit()
 
 
 def init_connection() -> tuple:
-    conn = sqlite3.connect('treasury_data.db')
+    conn = sqlite3.connect('tt.db')
     cur = conn.cursor()
     return conn, cur
 
@@ -44,7 +46,7 @@ def create_account(conn: sqlite3.Connection, cur: sqlite3.Cursor,
     conn.commit()
 
 
-def add_transaction(conn: sqlite3.Connection, cur: sqlite3.Cursor,
+def create_transaction(conn: sqlite3.Connection, cur: sqlite3.Cursor,
                     account_id: int, amount: float, category_id: int,
                     comment: str | None) -> None:
     cur.execute(f'''
