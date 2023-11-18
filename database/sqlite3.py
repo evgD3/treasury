@@ -40,21 +40,32 @@ def create_account(conn: sqlite3.Connection, cur: sqlite3.Cursor,
     cur.execute(f'''
                 INSERT INTO account
                 (name, currency, balance, description)
-                VALUES ('{account_name}', '{currency}', '0.0',
-                '{description}')  
+                VALUES ('{account_name}', '{currency}', '0.0', 
+                '{description}')
                 ''')
     conn.commit()
 
 
 def create_deal(conn: sqlite3.Connection, cur: sqlite3.Cursor,
-                    account_id: int, amount: float, category_id: int,
-                    description: str | None) -> None:
+                account_id: int, amount: float, category_id: int,
+                description: str | None) -> None:
     cur.execute(f'''
                 INSERT INTO deal
                 (account_id, amount, category_id, description)
-                VALUES ('{account_id}', {amount}, '{category_id}',
+                VALUES ('{account_id}', {amount}, '{category_id}', 
                 '{description}')
                 ''')
+    conn.commit()
+
+
+def edit_deal(conn: sqlite3.Connection, cur: sqlite3.Cursor,
+              account_name: str, deal_id: int, amount: float,
+              category: str, comment: str | None) -> None:
+    cur.execute(f'''
+                UPDATE {account_name}
+                SET (amount, category, comment) =
+                ({amount}, '{category}', '{comment}')
+                WHERE id = {deal_id}''')
     conn.commit()
 
 
@@ -114,17 +125,6 @@ def select_by_category(cur: sqlite3.Cursor, account_name: str,
                 ''')
     output = cur.fetchall()
     return output
-
-
-def edit_transaction(conn: sqlite3.Connection, cur: sqlite3.Cursor,
-                     account_name: str, transaction_id: int, amount: float,
-                     category: str, comment: str|None) -> None:
-    cur.execute(f'''
-                UPDATE {account_name}
-                SET (amount, category, comment) =
-                ({amount}, '{category}', '{comment}')
-                WHERE id = {transaction_id}''')
-    conn.commit()
 
 
 def close_db(conn: sqlite3.Connection,
