@@ -44,8 +44,8 @@ def cli_parce(argv: list) -> None:
             raise SystemExit
 
     if action in ('-p', '--print'):
-        deals = select_all(cur, account_name)
-        print_resent(account_name, deals)
+        deals = select_all(cur, account_id)
+        print_resent(account_name, account_cur, account_balance, deals)
 
     elif action in ('-a', '--add_deal'):
         try:
@@ -123,27 +123,29 @@ def cli_parce(argv: list) -> None:
             else:
                 to_date = datetime.date.fromisoformat(f'{year}-{month+1}-01')
         deals = select_by_date(cur, account_id, from_date, to_date)
-        print_by_date(account_name, account_cur, from_date, to_date, deals) 
+        print_by_date(account_name, account_cur, from_date, to_date, deals)
                       
-    elif action == '-py':
+    elif action in ('-py', '--print_year'):
         year = datetime.date.today().year
         from_date = datetime.date.fromisoformat(f'{year}-01-01')
         to_date = datetime.date.fromisoformat(f'{year+1}-01-01')
-        print_by_date(account,
-                      select_by_date(cur, account, from_date, to_date))
+        deals = select_by_date(cur, account_id, from_date, to_date)
+        print_by_date(account_name, account_cur, from_date, to_date, deals)
 
-    elif action == '-pa':
-        print_all(account, select_all(cur, account))
 
-    elif action == '-ps':
+    elif action in ('-pa', '--print_all'):
+        deals = select_all(cur, account_id)
+        print_all(account_name, account_cur, account_balance, deals)
+
+    elif action in ('-ps', 'print_stats'):
         from_date = input('from (yyyy-mm-dd) > ').strip()
         from_date = datetime.date.fromisoformat(from_date)
         to_date = input('to (yyyy-mm-dd) > ').strip()
         to_date = datetime.date.fromisoformat(to_date)
-        print_stats(account, select_by_date(cur, account, from_date, to_date),
-                    from_date, to_date)
+        deals = select_by_date(cur, account_id, from_date, to_date)
+        print_stats(account_name, account_cur, deals, from_date, to_date)
 
-    elif action == '-pms':
+    elif action in ('-pms', '--print_month_stats'):
         now = datetime.date.today()
         year = now.year
         month = now.month
@@ -158,24 +160,26 @@ def cli_parce(argv: list) -> None:
                 to_date = datetime.date.fromisoformat(f'{year}-0{month+1}-01')
             else:
                 to_date = datetime.date.fromisoformat(f'{year}-{month+1}-01')
-        print_stats(account, select_by_date(cur, account, from_date, to_date),
-                    from_date, to_date)
+        deals = select_by_date(cur, account_id, from_date, to_date)
+        print_stats(account_name, account_cur, deals, from_date, to_date)
 
-    elif action == '-pys':
+    elif action in ('-pys', '--print_year_stats'):
         year = datetime.date.today().year
         from_date = datetime.date.fromisoformat(f'{year}-01-01')
         to_date = datetime.date.fromisoformat(f'{year+1}-01-01')
-        print_stats(account, select_by_date(cur, account, from_date, to_date),
-                    from_date, to_date)
+        deals = select_by_date(cur, account_id, from_date, to_date)
+        print_stats(account_name, account_cur, deals, from_date, to_date)
 
-    elif action == '-pas':
+    elif action in ('-pas', '--print_all_stats'):
         from_date = datetime.date.fromisoformat('1970-01-01')
         to_date = datetime.date.today()
-        print_stats(account, select_all(cur, account), from_date, to_date)
+        deals = select_by_date(cur, account_id, from_date, to_date)
+        print_stats(account_name, account_cur, deals, from_date, to_date)
 
-    elif action == '-h':
+
+    elif action in ('-h', '--help'):
         print('''
-        usage: treasury [-action]
+        usage: treasury [account_name] [-action]
 
         actions:
           -h                show this help message
