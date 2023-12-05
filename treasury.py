@@ -4,7 +4,7 @@ import treasury_cli
 
 
 def main():
-    treasury_cli.command(sys.argv)
+    treasury_cli.cli_parce(sys.argv)
 
 
 if __name__ == '__main__':
