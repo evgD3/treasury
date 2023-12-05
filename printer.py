@@ -16,26 +16,26 @@ def print_resent(account: str, transactions: list) -> None:
 
 
 
-def print_all(account: str, transactions: list) -> None:
+def print_all(account_name: str, account_cur, deals: list) -> None:
     income = 0
     costs = 0
-    for i in transactions:
+    for i in deals:
         if i[2] > 0:
             income += i[2]
         else:
             costs += i[2]
-    print(f'ACCOUNT  {account}')
+    print(f'ACCOUNT  {account_name}')
     print(f'\033[92mINCOME: {income} '
           f'\033[91mCOSTS: {costs}')
     print(f'\033[34m[{"id":<5}][{"CUR":<4}][{"amount":<9}]'
           f'[{"date":<11}][{"type":<15}]')
-    for i in transactions:
+    for i in deals:
         if i[2] > 0:
-            print(f'\033[92m[{i[0]:<5}][{i[1]:<4}]'
-                  f'[{i[2]:<9}][{i[3]} ][{i[4]:<15}]')
+            print(f'\033[92m[{i[0]:<5}][{account_cur:<4}]'
+                  f'[{i[1]:<9}][{i[2]} ][{i[3]:<15}]')
         else:
-            print(f'\033[31m[{i[0]:<5}][{i[1]:<4}]'
-                  f'[{i[2]:<9}][{i[3]} ][{i[4]:<15}]')
+            print(f'\033[31m[{i[0]:<5}][{account_cur:<4}]'
+                  f'[{i[1]:<9}][{i[2]} ][{i[3]:<15}]')
 
 
 def print_category(account_name: str, category_name: str,
