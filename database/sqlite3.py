@@ -105,10 +105,11 @@ def select_groups(cur: sqlite3.Cursor, from_date: datetime.date,
     return output
 
 
-def select_all(cur: sqlite3.Cursor, account_name: str) -> list:
+def select_all(cur: sqlite3.Cursor, account_id: int) -> list:
     cur.execute(f'''
-                SELECT id, currency, amount, date(date), category
-                FROM {account_name}
+                SELECT id, amount, date(date), description, category_id
+                FROM deal
+                WHERE account_id = {account_id}
                 ORDER BY id DESC
                 ''')
     output = cur.fetchall()
