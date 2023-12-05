@@ -83,30 +83,29 @@ def print_by_date(account_name: str, account_cur: str,
                   f'[{i[2]} ][{i[3]:<15}]')
 
 
-def print_stats(account: str, transactions: list,
+def print_stats(account_name: str, account_cur: str, deals: list,
                 from_date: datetime.date, to_date: datetime.date) -> None:
-    count_transactions = len(transactions)
+    count_transactions = len(deals)
     period = (to_date - from_date).days
     income = 0
     costs = 0
     categories = {}
-    currency = transactions[1][2]
-    for i in transactions:
+    for i in deals:
         if i[1] > 0:
             income += i[1]
         else:
             costs += i[1]
-        if i[4] in categories:
+        if i[3] in categories:
             categories[i[4]] += i[1]
         else:
-            categories[i[4]] = i[1]
-    print(f'ACCOUNT  {account}')
+            categories[i[3]] = i[1]
+    print(f'ACCOUNT  {account_name}')
     print(f'\033[34mDAYS: {period}  ({from_date} -> {to_date})')
-    print(f'\033[34mCOUNT TRANSACTIONS FOR PERIOD: {count_transactions}')
+    print(f'\033[34mCOUNT DEALS FOR PERIOD: {count_transactions}')
     print(f'\033[92mINCOME: {income} ' f'\033[91mCOSTS: {costs}')
     print('\033[34m[type           ][amount   ][CUR ]')
     for i in categories:
         if categories[i] > 0:
-            print(f'\033[92m[{i:<15}][{categories[i]:<9}][{currency:<4}]')
+            print(f'\033[92m[{i:<15}][{categories[i]:<9}][{account_cur:<4}]')
         else:
-            print(f'\033[91m[{i:<15}][{categories[i]:<9}][{currency:<4}]')
+            print(f'\033[91m[{i:<15}][{categories[i]:<9}][{account_cur:<4}]')
