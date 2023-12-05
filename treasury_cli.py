@@ -1,21 +1,26 @@
 import datetime
 
-from database.sqlite3 import add_transaction
+from database.sqlite3 import create_account
+from database.sqlite3 import create_category
+from database.sqlite3 import create_deal
 from database.sqlite3 import close_db
-from database.sqlite3 import edit_transaction
+from database.sqlite3 import edit_deal
+from database.sqlite3 import init_connection
 from database.sqlite3 import init_db
 from database.sqlite3 import select_all
 from database.sqlite3 import select_by_category
 from database.sqlite3 import select_by_date
+from database.sqlite3 import select_groups
 
-from printer import print_all, print_stats
+from printer import print_all
 from printer import print_by_date
 from printer import print_category
 from printer import print_resent
+from printer import print_stats
 
 
 def command(argv: list) -> None:
-    conn, cur = init_db()
+    conn, cur = init_connection()
 
     try:
         account = argv[1]
