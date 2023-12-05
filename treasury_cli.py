@@ -11,6 +11,7 @@ from database.sqlite3 import select_account_list
 from database.sqlite3 import select_all
 from database.sqlite3 import select_by_category
 from database.sqlite3 import select_by_date
+from database.sqlite3 import select_category_list
 from database.sqlite3 import select_groups
 
 from printer import print_all
@@ -23,6 +24,7 @@ from printer import print_stats
 def cli_parce(argv: list) -> None:
     conn, cur = init_connection()
     accounts = select_account_list(cur)
+    categories = select_category_list(cur)
 
     try:
         account_name = argv[1]
@@ -33,54 +35,79 @@ def cli_parce(argv: list) -> None:
     for i in accounts:
         if i[1] == account_name:
             account_id = i[0]
+            account_cur = i[2]
+            account_balance = i[3]
+            account_description = i[4]
             break
         else:
-            print(f'account {account_name} not exist')
+            print(f'account "{account_name}" not exist')
             raise SystemExit
 
     if action in ('-p', '--print'):
-        print_resent(account, select_all(cur, account))
+        deals = select_all(cur, account_name)
+        print_resent(account_name, deals)
 
     elif action in ('-a', '--add_deal'):
         try:
-            account_id = int(arg
             amount = int(argv[3])
             category = argv[4]
             try:
-                comment = argv[5]
+                description = argv[5]
             except IndexError:
-                comment = None
+                description = None
         except IndexError:
             amount = int(input('amount > ').strip())
             category = input('category > ').strip()
-            comment = input('comment > ').strip()
+            description = input('comment > ').strip()
+        for i in categories:
+            if category == i[1]:
+                category_id = i[0]
+                break
+            else:
+                print(f'category "{category}" not exist')
+                raise SystemExit
         create_deal(conn, cur, account_id, amount, category_id, description)
 
-    elif action == '-e':
+    elif action in ('-e', '--edit_deal'):
         try:
-            transaction_id = argv[3]
+            deal_id = argv[3]
             amount = argv[4]
             category = argv[5]
             try:
-                comment = argv[5]
+                description = argv[5]
             except IndexError:
-                comment = None
+                description = None
         except IndexError:
-            transaction_id = int(input('id> ').strip())
+            deal_id = int(input('id > ').strip())
             amount = int(input('amount > ').strip())
             category = input('category > ').strip()
-            comment = input('comment > ').strip()
-        edit_transaction(conn, cur, account, transaction_id, amount,
-                         category, comment)
+            description = input('comment > ').strip()
+        for i in categories:
+            if category == i[1]:
+                category_id = i[0]
+                break
+            else:
+                print(f'category "{category}" not exist')
+                raise SystemExit
+        edit_deal(conn, cur, account_id, deal_id, amount, category_id,
+                  description)
 
-    elif action == '-pc':
+    elif action in ('-pc', '--print_category'):
         try:
             category = argv[3]
         except IndexError:
             category = input('category > ').strip()
-        print_category(account, select_by_category(cur, account, category))
+        for i in categories:
+                if category == i[1]:
+                    category_id = i[0]
+                    break
+                else:
+                    print(f'category "{category}" not exist')
+                    raise SystemExit
+        deals = select_by_category(cur, account_id, category_id)
+        print_category(account_name, category, account_cur, deals)
 
-    elif action == '-pm':
+    elif action in ('-pm', '--print_month'):
         now = datetime.date.today()
         year = now.year
         month = now.month
@@ -95,9 +122,9 @@ def cli_parce(argv: list) -> None:
                 to_date = datetime.date.fromisoformat(f'{year}-0{month+1}-01')
             else:
                 to_date = datetime.date.fromisoformat(f'{year}-{month+1}-01')
-        print_by_date(account, 
-                      select_by_date(cur, account, from_date, to_date))
-
+        deals = select_by_date(cur, account_id, from_date, to_date)
+        print_by_date(account_name, account_cur, from_date, to_date, deals) 
+                      
     elif action == '-py':
         year = datetime.date.today().year
         from_date = datetime.date.fromisoformat(f'{year}-01-01')
