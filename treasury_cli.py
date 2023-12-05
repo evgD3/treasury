@@ -7,6 +7,7 @@ from database.sqlite3 import close_db
 from database.sqlite3 import edit_deal
 from database.sqlite3 import init_connection
 from database.sqlite3 import init_db
+from database.sqlite3 import select_account_list
 from database.sqlite3 import select_all
 from database.sqlite3 import select_by_category
 from database.sqlite3 import select_by_date
@@ -19,21 +20,30 @@ from printer import print_resent
 from printer import print_stats
 
 
-def command(argv: list) -> None:
+def cli_parce(argv: list) -> None:
     conn, cur = init_connection()
+    accounts = select_account_list(cur)
 
     try:
-        account = argv[1]
+        account_name = argv[1]
         action = argv[2]
     except IndexError:
-        account = input('account > ').strip()
+        account_name = input('account > ').strip()
         action = input('action > ').strip()
+    for i in accounts:
+        if i[1] == account_name:
+            account_id = i[0]
+            break
+        else:
+            print(f'account {account_name} not exist')
+            raise SystemExit
 
-    if action == '-p':
+    if action in ('-p', '--print'):
         print_resent(account, select_all(cur, account))
 
-    elif action == '-a':
+    elif action in ('-a', '--add_deal'):
         try:
+            account_id = int(arg
             amount = int(argv[3])
             category = argv[4]
             try:
@@ -44,7 +54,7 @@ def command(argv: list) -> None:
             amount = int(input('amount > ').strip())
             category = input('category > ').strip()
             comment = input('comment > ').strip()
-        add_transaction(conn, cur, account, amount, category, comment)
+        create_deal(conn, cur, account_id, amount, category_id, description)
 
     elif action == '-e':
         try:
