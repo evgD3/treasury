@@ -38,10 +38,11 @@ def print_all(account: str, transactions: list) -> None:
                   f'[{i[2]:<9}][{i[3]} ][{i[4]:<15}]')
 
 
-def print_category(account: str, transactions: list) -> None:
+def print_category(account_name: str, category_name: str,
+                   account_cur: str, deals: list) -> None:
     ALL = 0
-    print(f'ACCOUNT  {account}')
-    for i in transactions:
+    print(f'ACCOUNT  {account_name}  {category_name}')
+    for i in deals:
         ALL += i[1]
     if ALL > 0:
         print(f'\033[92mALL {ALL}')
@@ -49,13 +50,13 @@ def print_category(account: str, transactions: list) -> None:
         print(f'\033[91mALL {ALL}')
     print(f'\033[95m[{"type":<15}][{"date":<11}]'
           f'[{"amount":<9}][{"CUR":<4}][{"id":<5}]')
-    for i in transactions:
+    for i in deals:
         if i[1] > 0:
-            print(f'\033[92m[{i[3]:<15}][{i[2]} ]'
-                  f'[{i[1]:<9}][{i[4]:<4}][{i[0]:<5}]')
+            print(f'\033[92m[{category_name:<15}][{i[2]} ]'
+                  f'[{i[1]:<9}][{account_cur:<4}][{i[0]:<5}]')
         else:
-            print(f'\033[91m[{i[3]:<15}][{i[2]} ]'
-                  f'[{i[1]:<9}][{i[4]:<4}][{i[0]:<5}]')
+            print(f'\033[91m[{category_name:<15}][{i[2]} ]'
+                  f'[{i[1]:<9}][{account_cur:<4}][{i[0]:<5}]')
 
 
 def print_by_date(account: str, transactions: list) -> None:
