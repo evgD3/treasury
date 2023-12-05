@@ -116,12 +116,13 @@ def select_all(cur: sqlite3.Cursor, account_id: int) -> list:
     return output
 
 
-def select_by_category(cur: sqlite3.Cursor, account_name: str,
-                       category: str) -> list:
+def select_by_category(cur: sqlite3.Cursor, account_id: int,
+                       category_id: int) -> list:
     cur.execute(f'''
-                SELECT id, amount, date(date), category, currency
-                FROM {account_name}
-                WHERE category = '{category}'
+                SELECT id, amount, date(date), description
+                FROM deal
+                WHERE account_id = {account_id}
+                AND category_id = {category_id}
                 ORDER BY id DESC
                 ''')
     output = cur.fetchall()
