@@ -8,7 +8,7 @@ def print_resent(account_name: str, account_cur: str,
     print(f'\033[34m[{"id":<5}][{"CUR":<4}][{"amount":<9}]'
           f'[{"date":<11}][{"type":<15}]')
     for i in deals:
-        if i[2] > 0:
+        if i[1] > 0:
             print(f'\033[92m[{i[0]:<5}][{account_cur:<4}]'
                   f'[{i[1]:<9}][{i[2]} ][{i[3]:<15}]')
         else:
@@ -22,7 +22,7 @@ def print_all(account_name: str, account_cur,
     income = 0
     costs = 0
     for i in deals:
-        if i[2] > 0:
+        if i[1] > 0:
             income += i[2]
         else:
             costs += i[2]
@@ -32,7 +32,7 @@ def print_all(account_name: str, account_cur,
     print(f'\033[34m[{"id":<5}][{"CUR":<4}][{"amount":<9}]'
           f'[{"date":<11}][{"type":<15}]')
     for i in deals:
-        if i[2] > 0:
+        if i[1] > 0:
             print(f'\033[92m[{i[0]:<5}][{account_cur:<4}]'
                   f'[{i[1]:<9}][{i[2]} ][{i[3]:<15}]')
         else:
