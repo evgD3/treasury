@@ -127,6 +127,15 @@ def select_by_category(cur: sqlite3.Cursor, account_name: str,
     return output
 
 
+def select_account_list(cur: sqlite3.Cursor):
+    cur.execute(f'''
+                SELECT *
+                from account
+                ''')
+    output = cur.fetchall()
+    return output
+
+
 def close_db(conn: sqlite3.Connection,
              cur: sqlite3.Cursor) -> None:
     conn.commit()
