@@ -32,6 +32,7 @@ def cli_parce(argv: list) -> None:
     except IndexError:
         account_name = input('account > ').strip()
         action = input('action > ').strip()
+    account_id = 0
     for i in accounts:
         if i[1] == account_name:
             account_id = i[0]
@@ -39,9 +40,9 @@ def cli_parce(argv: list) -> None:
             account_balance = i[3]
             account_description = i[4]
             break
-        else:
-            print(f'account "{account_name}" not exist')
-            raise SystemExit
+    if account_id == 0:
+        print(f'account "{account_name}" not exist')
+        raise SystemExit
 
     if action in ('-p', '--print'):
         deals = select_all(cur, account_id)
@@ -59,13 +60,14 @@ def cli_parce(argv: list) -> None:
             amount = int(input('amount > ').strip())
             category = input('category > ').strip()
             description = input('comment > ').strip()
+        category_id = 0
         for i in categories:
             if category == i[1]:
                 category_id = i[0]
                 break
-            else:
-                print(f'category "{category}" not exist')
-                raise SystemExit
+        if category_id == 0:
+            print(f'category "{category}" not exist')
+            raise SystemExit
         create_deal(conn, cur, account_id, amount, category_id, description)
 
     elif action in ('-e', '--edit_deal'):
