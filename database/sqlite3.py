@@ -107,6 +107,16 @@ def create_category(conn: sqlite3.Connection, cur: sqlite3.Cursor,
     conn.commit()
 
 
+def edit_category(conn: sqlite3.Connection, cur: sqlite3.Cursor,
+                  name: str, description: str, category_id: int) -> None:
+    cur.execute(f'''
+                UPDATE category
+                SET (name, description) = ('{name}', '{description}')
+                WHERE id = {category_id}
+                ''')
+    conn.commit()
+
+
 def select_by_date(cur: sqlite3.Cursor, account_id: int,
                    from_date: datetime.date, to_date: datetime.date) -> list:
     cur.execute(f'''
