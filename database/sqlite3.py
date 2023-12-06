@@ -55,6 +55,19 @@ def create_deal(conn: sqlite3.Connection, cur: sqlite3.Cursor,
                 VALUES ('{account_id}', {amount}, '{category_id}', 
                 '{description}')
                 ''')
+    cur.execute(f'''
+                SELECT balance
+                FROM account
+                WHERE id = {account_id}
+                ''')
+    previous_balance = cur.fetchall()
+    previous_balance = previous_balance[0][0]
+    new_balance = previous_balance + amount
+    cur.execute(f'''
+                UPDATE account
+                SET balance = {new_balance}
+                WHERE id = {account_id}
+                ''')
     conn.commit()
 
 
@@ -132,15 +145,16 @@ def select_by_category(cur: sqlite3.Cursor, account_id: int,
 def select_account_list(cur: sqlite3.Cursor) -> list:
     cur.execute(f'''
                 SELECT *
-                from account
+                FROM account
                 ''')
     output = cur.fetchall()
     return output
 
+
 def select_category_list(cur: sqlite3.Cursor) -> list:
     cur.execute(f'''
                 SELECT *
-                from category
+                FROM category
                 ''')
     output = cur.fetchall()
     return output

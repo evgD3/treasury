@@ -23,9 +23,9 @@ def print_all(account_name: str, account_cur,
     costs = 0
     for i in deals:
         if i[1] > 0:
-            income += i[2]
+            income += i[1]
         else:
-            costs += i[2]
+            costs += i[1]
     print(f'ACCOUNT  {account_name}  {account_balance}')
     print(f'\033[92mINCOME: {income} '
           f'\033[91mCOSTS: {costs}')
@@ -98,7 +98,7 @@ def print_stats(account_name: str, account_cur: str, deals: list,
         else:
             costs += i[1]
         if i[3] in categories:
-            categories[i[4]] += i[1]
+            categories[i[3]] += i[1]
         else:
             categories[i[3]] = i[1]
     print(f'ACCOUNT  {account_name}')
