@@ -73,11 +73,11 @@ def create_deal(conn: sqlite3.Connection, cur: sqlite3.Cursor,
 
 def edit_deal(conn: sqlite3.Connection, cur: sqlite3.Cursor,
               account_id: str, deal_id: int, amount: float,
-              category: str, comment: str | None) -> None:
+              category_id: int, description: str | None) -> None:
     cur.execute(f'''
                 UPDATE deal
-                SET (amount, category, comment) =
-                ({amount}, '{category}', '{comment}')
+                SET (amount, category_id, description) =
+                ({amount}, '{category_id}', '{description}')
                 WHERE id = {deal_id}
                 ''')
     cur.execute(f'''
@@ -135,10 +135,12 @@ def select_groups(cur: sqlite3.Cursor, from_date: datetime.date,
 
 def select_all(cur: sqlite3.Cursor, account_id: int) -> list:
     cur.execute(f'''
-                SELECT id, amount, date(date), description, category_id
-                FROM deal
+                SELECT deal.id, deal.amount, date(date), deal.description,
+                category.name
+                FROM deal INNER JOIN category
+                ON deal.category_id = category.id
                 WHERE account_id = {account_id}
-                ORDER BY id DESC
+                ORDER BY deal.id DESC
                 ''')
     output = cur.fetchall()
     return output
