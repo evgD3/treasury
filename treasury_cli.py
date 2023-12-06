@@ -5,6 +5,7 @@ from database.sqlite3 import create_category
 from database.sqlite3 import create_deal
 from database.sqlite3 import close_db
 from database.sqlite3 import edit_deal
+from database.sqlite3 import edit_category
 from database.sqlite3 import init_connection
 from database.sqlite3 import init_db
 from database.sqlite3 import select_account_list
@@ -178,6 +179,16 @@ def cli_parce(argv: list) -> None:
         deals = select_by_date(cur, account_id, from_date, to_date)
         print_stats(account_name, account_cur, deals, from_date, to_date)
 
+    elif action in ('-ac', '--add_category'):
+        name = input('name > ').strip()
+        description = input('description > ').strip()
+        create_category(conn, cur, name, description)
+
+    elif action in ('-ec', '--edit_category'):
+        category_id = int(input('category id > ').strip())
+        name = input('name > ').strip()
+        description = input('description > ').strip()
+        edit_category(conn, cur, name, description, category_id)
 
     elif action in ('-h', '--help'):
         print('''
