@@ -2,9 +2,9 @@ import datetime
 
 
 def print_resent(account_name: str, account_cur: str,
-                 account_balance, deals: list) -> None:
+                 account_balance: float, deals: list) -> None:
     deals = deals[:10]
-    print(f'ACCOUNT  {account_name}  {account_balance}')
+    print(f'ACCOUNT  {account_name}  {account_balance} {account_cur}')
     print(f'\033[34m[{"id":<5}][{"CUR":<4}][{"amount":<9}]'
           f'[{"date":<11}][{"type":<15}]')
     for i in deals:
