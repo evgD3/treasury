@@ -72,13 +72,28 @@ def create_deal(conn: sqlite3.Connection, cur: sqlite3.Cursor,
 
 
 def edit_deal(conn: sqlite3.Connection, cur: sqlite3.Cursor,
-              account_name: str, deal_id: int, amount: float,
+              account_id: str, deal_id: int, amount: float,
               category: str, comment: str | None) -> None:
     cur.execute(f'''
-                UPDATE {account_name}
+                UPDATE deal
                 SET (amount, category, comment) =
                 ({amount}, '{category}', '{comment}')
-                WHERE id = {deal_id}''')
+                WHERE id = {deal_id}
+                ''')
+    cur.execute(f'''
+                SELECT amount
+                FROM deal
+                WHERE account_id = {account_id}
+                ''')
+    balance = 0
+    amount_list = cur.fetchall()
+    for i in amount_list:
+        balance += i[0]
+    cur.execute(f'''
+                UPDATE account
+                SET balance = {balance}
+                WHERE id = {account_id}
+                ''')
     conn.commit()
 
 
