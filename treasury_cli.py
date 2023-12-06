@@ -190,6 +190,12 @@ def cli_parce(argv: list) -> None:
         description = input('description > ').strip()
         edit_category(conn, cur, name, description, category_id)
 
+    elif action in ('-aa', '--add_account'):
+        account_name = input('name > ').strip()
+        currency = input('currency > ').strip()
+        description = input('description > ').strip()
+        create_account(conn, cur, account_name, currency, description)
+
     elif action in ('-h', '--help'):
         print('''
         usage: treasury [account_name] [-action]
@@ -205,6 +211,9 @@ def cli_parce(argv: list) -> None:
           -pms              print monthly statistic
           -pys              print yearly statistic
           -pas              print statistic by all time
+          -ac               add category
+          -ec               edit category
+          -aa               add account
               ''')
 
     else:
