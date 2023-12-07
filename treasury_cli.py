@@ -108,13 +108,14 @@ def cli_parce(argv: list) -> None:
             category = argv[3]
         except IndexError:
             category = input('category > ').strip()
+        category_id = 0
         for i in categories:
-                if category == i[1]:
-                    category_id = i[0]
-                    break
-                else:
-                    print(f'category "{category}" not exist')
-                    raise SystemExit
+            if category == i[1]:
+                category_id = i[0]
+                break
+        if category_id == 0:
+            print(f'category "{category}" not exist')
+            raise SystemExit
         deals = select_by_category(cur, account_id, category_id)
         print_category(account_name, category, account_cur, deals)
 
