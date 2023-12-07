@@ -10,6 +10,16 @@ simple cli finance manager
 - display all transactions
 - display monthly and yearly statistics
 
+## installation
+
+clone repo
+{git clone https://codeberg.org/ejix/treasury.git}
+
+install dependencies
+{poetry install}
+
+use
+
 ## usage:
 `code`
     usage: treasury [account name] [-action]
