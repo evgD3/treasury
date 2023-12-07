@@ -8,4 +8,23 @@ the following options are now available:
 - display transactions list for the selected category
 - display transactions list for the current month
 - display all transactions
-- display monthly and yearly statistics 
+- display monthly and yearly statistics
+
+usage:
+{
+    usage: treasury [account_name] [-action]
+
+        actions:
+          -h                show this help message
+          -p                print resent transactions
+          -a                add transaction
+          -pc [category]    print resent transactions for category
+          -pm               print transactions for this month
+          -py               print transactions for this year
+          -pa               print all exist transactions
+          -pms              print monthly statistic
+          -pys              print yearly statistic
+          -pas              print statistic by all time
+          -ac               add category
+          -ec               edit category
+}
