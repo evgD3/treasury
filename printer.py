@@ -34,10 +34,10 @@ def print_all(account_name: str, account_cur,
     for i in deals:
         if i[1] > 0:
             print(f'\033[92m[{i[0]:<5}][{account_cur:<4}]'
-                  f'[{i[1]:<9}][{i[2]} ][{i[3]:<15}]')
+                  f'[{i[1]:<9}][{i[2]} ][{i[4]:<15}]')
         else:
             print(f'\033[31m[{i[0]:<5}][{account_cur:<4}]'
-                  f'[{i[1]:<9}][{i[2]} ][{i[3]:<15}]')
+                  f'[{i[1]:<9}][{i[2]} ][{i[4]:<15}]')
 
 
 def print_category(account_name: str, category_name: str,
