@@ -13,8 +13,6 @@ the following options are now available:
 usage:
 {
     usage: treasury [account name] [-action]
-}
-{
     actions:
           -h                show this help message
           -p                print resent transactions
