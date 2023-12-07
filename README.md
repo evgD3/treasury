@@ -24,7 +24,7 @@ use
 
 ## usage:
 
-`usage: treasury [account name] [-action]
+usage: treasury [account name] [-action]
     
 actions:
       -h                show this help message
@@ -38,4 +38,4 @@ actions:
       -pys              print yearly statistic
       -pas              print statistic by all time
       -ac               add category
-      -ec               edit category`
+      -ec               edit category
