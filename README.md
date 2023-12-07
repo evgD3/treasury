@@ -13,28 +13,29 @@ simple cli finance manager
 ## installation
 
 clone repo
+
 `git clone https://codeberg.org/ejix/treasury.git`
 
 install dependencies
+
 `poetry install`
 
 use
 
 ## usage:
-`
-    usage: treasury [account name] [-action]
+
+`usage: treasury [account name] [-action]`
     
-    actions:
-          -h                show this help message
-          -p                print resent transactions
-          -a                add transaction
-          -pc [category]    print resent transactions for category
-          -pm               print transactions for this month
-          -py               print transactions for this year
-          -pa               print all exist transactions
-          -pms              print monthly statistic
-          -pys              print yearly statistic
-          -pas              print statistic by all time
-          -ac               add category
-          -ec               edit category
-`
+`actions:
+      -h                show this help message
+      -p                print resent transactions
+      -a                add transaction
+      -pc [category]    print resent transactions for category
+      -pm               print transactions for this month
+      -py               print transactions for this year
+      -pa               print all exist transactions
+      -pms              print monthly statistic
+      -pys              print yearly statistic
+      -pas              print statistic by all time
+      -ac               add category
+      -ec               edit category`
