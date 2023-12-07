@@ -12,7 +12,7 @@ the following options are now available:
 
 usage:
 {
-    usage: treasury [account_name] [-action]
+    usage: treasury [account name] [-action]
 
         actions:
           -h                show this help message
