@@ -2,7 +2,7 @@
 
 simple cli finance manager
 
-the following options are now available:
+## the following options are now available:
 - add income/expense
 - display a list of all operations
 - display transactions list for the selected category
@@ -10,9 +10,10 @@ the following options are now available:
 - display all transactions
 - display monthly and yearly statistics
 
-usage:
-
-{   usage: treasury [account name] [-action]
+## usage:
+`code`
+    usage: treasury [account name] [-action]
+    
     actions:
           -h                show this help message
           -p                print resent transactions
@@ -26,4 +27,4 @@ usage:
           -pas              print statistic by all time
           -ac               add category
           -ec               edit category
-}
+`code`
