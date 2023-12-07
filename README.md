@@ -24,8 +24,10 @@ use
 
 ## usage:
 
+```
+{
 usage: treasury [account name] [-action]
-{    
+
 actions:
       -h                show this help message
       -p                print resent transactions
@@ -40,3 +42,4 @@ actions:
       -ac               add category
       -ec               edit category
 }
+```
