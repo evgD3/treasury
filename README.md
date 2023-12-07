@@ -13,19 +13,15 @@ simple cli finance manager
 ## installation
 
 clone repo
-{
-    git clone https://codeberg.org/ejix/treasury.git
-}
+`git clone https://codeberg.org/ejix/treasury.git`
 
 install dependencies
-{
-    poetry install
-}
+`poetry install`
 
 use
 
 ## usage:
-`code`
+`
     usage: treasury [account name] [-action]
     
     actions:
@@ -41,4 +37,4 @@ use
           -pas              print statistic by all time
           -ac               add category
           -ec               edit category
-`code`
+`
