@@ -11,8 +11,8 @@ the following options are now available:
 - display monthly and yearly statistics
 
 usage:
-{
-    usage: treasury [account name] [-action]
+
+{   usage: treasury [account name] [-action]
     actions:
           -h                show this help message
           -p                print resent transactions
