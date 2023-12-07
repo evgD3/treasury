@@ -42,8 +42,15 @@ def cli_parce(argv: list) -> None:
             account_description = i[4]
             break
     if account_id == 0:
-        print(f'account "{account_name}" not exist')
-        raise SystemExit
+        if input('create account (y/n)').strip() == 'y':
+            account_name = input('name > ').strip()
+            currency = input('currency > ').strip()
+            description = input('description > ').strip()
+            create_account(conn, cur, account_name, currency, description)
+            raise SystemExit
+        else:
+            print(f'account "{account_name}" not exist')
+            raise SystemExit
 
     if action in ('-p', '--print'):
         deals = select_all(cur, account_id)
@@ -85,13 +92,14 @@ def cli_parce(argv: list) -> None:
             amount = int(input('amount > ').strip())
             category = input('category > ').strip()
             description = input('comment > ').strip()
+        category_id = 0
         for i in categories:
             if category == i[1]:
                 category_id = i[0]
                 break
-            else:
-                print(f'category "{category}" not exist')
-                raise SystemExit
+        if category_id == 0:
+            print(f'category "{category}" not exist')
+            raise SystemExit
         edit_deal(conn, cur, account_id, deal_id, amount, category_id,
                   description)
 
@@ -181,20 +189,14 @@ def cli_parce(argv: list) -> None:
 
     elif action in ('-ac', '--add_category'):
         name = input('name > ').strip()
-        description = input('description > ').strip()
+        description = input('description > ')
         create_category(conn, cur, name, description)
 
     elif action in ('-ec', '--edit_category'):
         category_id = int(input('category id > ').strip())
         name = input('name > ').strip()
-        description = input('description > ').strip()
+        description = input('comment > ').strip()
         edit_category(conn, cur, name, description, category_id)
-
-    elif action in ('-aa', '--add_account'):
-        account_name = input('name > ').strip()
-        currency = input('currency > ').strip()
-        description = input('description > ').strip()
-        create_account(conn, cur, account_name, currency, description)
 
     elif action in ('-h', '--help'):
         print('''
@@ -213,7 +215,6 @@ def cli_parce(argv: list) -> None:
           -pas              print statistic by all time
           -ac               add category
           -ec               edit category
-          -aa               add account
               ''')
 
     else:
