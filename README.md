@@ -24,9 +24,9 @@ use
 
 ## usage:
 
-`usage: treasury [account name] [-action]`
+`usage: treasury [account name] [-action]
     
-`actions:
+actions:
       -h                show this help message
       -p                print resent transactions
       -a                add transaction
