@@ -58,14 +58,14 @@ def cli_parce(argv: list) -> None:
 
     elif action in ('-a', '--add_deal'):
         try:
-            amount = int(argv[3])
+            amount = float(argv[3])
             category = argv[4]
             try:
                 description = argv[5]
             except IndexError:
                 description = None
         except IndexError:
-            amount = int(input('amount > ').strip())
+            amount = float(input('amount > ').strip())
             category = input('category > ').strip()
             description = input('comment > ').strip()
         category_id = 0
@@ -89,7 +89,7 @@ def cli_parce(argv: list) -> None:
                 description = None
         except IndexError:
             deal_id = int(input('id > ').strip())
-            amount = int(input('amount > ').strip())
+            amount = float(input('amount > ').strip())
             category = input('category > ').strip()
             description = input('comment > ').strip()
         category_id = 0
